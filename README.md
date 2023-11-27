@@ -6,4 +6,6 @@
 4. npm run dev
 5. npm install convex
 6. npx convex dev
+im Convex Terminal: npx convex dev
+in node Terminal: npm run dev
 
