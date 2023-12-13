@@ -15,7 +15,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <div className ="flex flex-col">
-        <div className="text-black bg-white rounded-xl h-[400px] w-[200px} mb-2 p-2">
+        <div className="text-black bg-white rounded-xl h-[300px] w-[400px} mb-2 p-2 overflow-y-auto">
           {entries?.map((entry) => {
             return (
             <div key={entry._id} className="flex flex-col gap-2 text-black">
@@ -30,6 +30,7 @@ export default function Home() {
         onSubmit={(e) =>{
           e.preventDefault();
           handlePlayerAction({ message });
+          setMessage("");
         }}> 
           <input 
           className='p-1 rounded text-black'
