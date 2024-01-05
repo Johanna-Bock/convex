@@ -6,4 +6,7 @@ export default defineSchema({
     input: v.string(),
     response: v.string(),
   }),
+  adventures: defineTable({
+      characterClass: v.string(),
+  }),
 });
