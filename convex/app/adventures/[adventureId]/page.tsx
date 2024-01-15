@@ -3,19 +3,27 @@
 
 import Image from 'next/image'
 import {useState} from "react";
-import { useAction, useQueries, useQuery } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
 
 
-export default function Adventure() {
+export default function Adventure(
+  props: { 
+    params: { adventureId: Id<"adventures"> };
+ }) {
   const handlePlayerAction = useAction(api.chat.handlePlayerAction);
-  const entries = useQuery(api.chat.getAllEntries);
-  const [message, setMessage] = useState("")
+  const adventureId = props.params.adventureId;
+  const entries = useQuery(api.chat.getAllEntries, {
+    adventureId,
+  });
+  const [message, setMessage] = useState("");
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+        <div className= "grid grid-cols-2"></div>
         <div className ="flex flex-col">
-        <div className="text-black bg-white rounded-xl h-[300px] w-[400px} mb-2 p-2 overflow-y-auto">
+        <div className="text-black bg-white rounded-xl h-[300px] mb-2 p-2 overflow-y-auto">
           {entries?.map((entry) => {
             return (
             <div key={entry._id} className="flex flex-col gap-2 text-black">
@@ -29,7 +37,10 @@ export default function Adventure() {
         <form 
         onSubmit={(e) =>{
           e.preventDefault();
-          handlePlayerAction({ message });
+          handlePlayerAction({ 
+            message, 
+            adventureId,
+           });
           setMessage("");
         }}> 
         

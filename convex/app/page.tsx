@@ -11,12 +11,12 @@ export default function Main() {
     const router = useRouter();
 
     return (
-    <div>
+    <div className='flex justify-center item-center w-full h-screen'>
         <button
         onClick={async () => {
-            await createAdventure();
-            router.push("/adventures");
-        }}
+            const adventureId = await createAdventure();
+            router.push(`/adventures/${adventureId}`);
+        }} 
         >Start Adventure</button>
     </div>
     );

@@ -9,3 +9,5 @@
 im Convex Terminal: npx convex dev
 in node Terminal: npm run dev
 
+localhost:3000 (=Homepage)
+localhost:300/adventures (new adventure setup)
