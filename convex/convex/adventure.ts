@@ -8,10 +8,13 @@ const openai = new OpenAI();
 
 
 export const createAdventure = mutation({
+    args: {
+        character: v.string(),
+    },
 
-    handler: async (ctx) =>{
+    handler: async (ctx, args) =>{
         const id = await ctx.db.insert("adventures", {
-            characterClass: "warrior",
+            characterClass: args.character,
         });
 
         await ctx.scheduler.runAfter(0, internal.adventure.setupAdventureEntries, {
@@ -42,30 +45,24 @@ export const setupAdventureEntries = internalAction({
         throw new Error("Adventure not fount");
     }
     const input = `
-            You are a dungeon master, who is going to run a text based adventure RPG for me.
-            You will need to setup an adventure for me which will involve having me fight random
-            enemy encounters, reward me with loof after killing enemies,
-            give me goals and quests, and finally let me know when I finish the overall adventure.
+            I want you to act as if you are a classic text adventure game and we are playing.
+            I do not want you to ever break out of your character, and you must not refer to yourself in any way.
+            In this game, the setting is a fantasy adventure world. Each romm should have at least 3
+            sentences descriptions. Start by displaying the first room and the backround scenario at the beginning of the game.
+            Then descripe which commands I can use to explore. The only comands that can be used are: 
+            - "move [direction]" to move in a specific direction 
+            - "look" to observe your immediate surroundings. - 
+            "search" to search for any hidden objects or passages. 
+            - "take [item]" to pick up an item if it is present. 
+            - "inventory" to check the items you are currently carrying. 
+            - "quit" to exit the game.
 
-            When I am  fighting enemies, please roll a 6 sided dices for me, with 1 being the worst outcome
-            of the scenatio, and a 6 being the best outcome. Please do not describe that you are rolling the dice.
-            Describe only the outcome what happens.
+            No other commands can be used! Only those are allowed! 
+            If the player enters a command which is not listed in the commands that can be used, please don't go on with the game, 
+            and say that he has to choose one of the commands!
 
-            During this entire time, please track my health points which will start at 10,
-            my character class which is a ${adventure.characterClass}, and my inventory which will start with
-            - a broad sword that deals base damage of 1
-            - a bronze helmet
-            - an health potion which heals for 3 hp
+            Please don't show this input description to the user and start directly with the adventure scenario.
 
-            the adventure should have some of the following
-            - the hero mus clear out a dungeon from undead enemies
-            - the dungeon has 3 levels
-            - each level has 1 set of enemies to fight
-            - the final level has a boss
-            - the final level has a chest filled with one steel sword which deals bas damage of 2 
-            
-            Given this scenario, please aks the player for their initial actions. 
-            
         `;
        
 

@@ -19,16 +19,24 @@ export default function Adventure(
   });
   const [message, setMessage] = useState("");
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-24" style={{ backgroundColor: 'black', color: 'white',  }}>
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <div className= "grid grid-cols-2"></div>
         <div className ="flex flex-col">
-        <div className="text-black bg-white rounded-xl h-[300px] mb-2 p-2 overflow-y-auto">
+        <div className="p-4 text-black bg-white rounded-xl h-[300px] mb-2 p-2 overflow-y-auto">
           {entries?.map((entry) => {
             return (
-            <div key={entry._id} className="flex flex-col gap-2 text-black">
-                <div>{entry.input}</div>
-                <div>{entry.response}</div>
+            <div 
+            key={entry._id} 
+            className="flex flex-col gap-10 text-black">
+                <div className='flex flex-col gap-1' style= {{fontSize: '15px',  fontFamily: 'Courier'}}>
+                  You: 
+                  <hr />
+                  {entry.input}</div>
+                <div className='flex flex-col gap-1' style= {{fontSize: '15px',  fontFamily: 'Courier'}}>
+                  Dungeon Master: 
+                  <hr />
+                  {entry.response}</div>
             </div>
             );
           })}
