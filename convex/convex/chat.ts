@@ -5,6 +5,7 @@ import { action, internalQuery, mutation, query } from "./_generated/server";
 import OpenAI from 'openai';
 import { api, internal } from './_generated/api';
 
+
 const openai = new OpenAI();
 
 export const getEntriesForAdventure = internalQuery({
@@ -36,10 +37,12 @@ export const handlePlayerAction = action({
 
       // Valid commands allowed in the game
       const validCommands = [
-          "move",
+          "move [direction]",
+          "wizard",
+          "warrior",
           "look",
           "search",
-          "take",
+          "take [item]",
           "inventory",
           "quit"
       ];
@@ -50,7 +53,7 @@ export const handlePlayerAction = action({
       // Check if the command is valid
       if (!validCommands.includes(command)) {
           // If the command is invalid, inform the player to choose a valid command
-          const invalidCommandResponse = "Please choose a valid command: move, look, search, take, inventory, quit";
+          const invalidCommandResponse = "Please choose a valid command: move [direction], look, search, take [item], inventory, quit";
 
           // Save the input message and invalid command response
           await ctx.runMutation(api.chat.insertEntry, {
