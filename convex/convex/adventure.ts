@@ -80,9 +80,9 @@ export const setupAdventureEntries = internalAction({
       const response = completion.choices[0].message.content ?? "";
 
       await ctx.runMutation(api.chat.insertEntry, {
-        input,
-        response,
-        adventureId: args.adventureId,
+          response,
+          adventureId: args.adventureId,
+          input: ""
       });
   },
 });
