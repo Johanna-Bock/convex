@@ -50,6 +50,7 @@ export const setupAdventureEntries = internalAction({
             In this game, the setting is a fantasy adventure world. 
             my character class is a ${adventure.characterClass}.
             "Characters can only behave as you know them from the definition."
+            Ask me at first what name I have and bring it sometimes in the adventure when you ask me things directly. The first input is free to add the name, after that the player can only use the commands.
     
             Each romm should have at least 3
             sentences descriptions. Start by displaying the first room and the backround scenario at the beginning of the game.
