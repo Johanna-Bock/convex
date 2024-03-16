@@ -9,5 +9,8 @@ export default defineSchema({
   }),
   adventures: defineTable({
       characterClass: v.string(),
+   
+      
   }),
+
 });

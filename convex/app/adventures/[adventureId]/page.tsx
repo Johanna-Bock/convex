@@ -25,7 +25,7 @@ export default function Adventure(
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <div className= "grid grid-cols-2"></div>
         <div className ="flex flex-col">
-        <div className="p-4 text-black bg-white rounded-xl h-[300px] mb-2 p-2 overflow-y-auto">
+        <div className="p-4 text-white bg-black rounded-xl h-[600px] mb-2 p-2 overflow-y-auto">
           {entries?.map((entry) => {
             const isCurrentEntryFirst = isFirstEntry;
             isFirstEntry = false; // Setze isFirstEntry auf false für die nächsten Einträge
@@ -33,13 +33,13 @@ export default function Adventure(
             return (
             <div 
             key={entry._id} 
-            className="flex flex-col gap-10 text-black">
+            className="flex flex-col gap-10 text-white">
               {isCurrentEntryFirst ? null : (
-                <div className='flex flex-col gap-1' style= {{fontSize: '15px',  fontFamily: 'Courier'}}>
+                <div className='flex flex-col gap-1' style= {{fontSize: '22px',  fontFamily: 'Courier'}}>
                   You: 
                   <hr />
                   {entry.input}</div> )}
-                <div className='flex flex-col gap-1' style= {{fontSize: '15px',  fontFamily: 'Courier'}}>
+                <div className='flex flex-col gap-1' style= {{fontSize: '22px',  fontFamily: 'Courier'}}>
                   Dungeon Master: 
                   <hr />
                   {entry.response}</div>
