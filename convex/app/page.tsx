@@ -18,36 +18,36 @@ return (
     <div className='flex flex-col items-center justify-center w-full h-screen' style={{ backgroundColor: 'black', color: 'white', fontSize: '30px', fontFamily: 'Courier', fontWeight: 'bold', textShadow: '0 0 5px white' }}>
         <h1 className="mb-8">Willkommen zum Textadventure Game! Bitte wähle ein Szenario:</h1>
 
-        <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>
-            {['duck', 'fox', 'lizard'].map(character => {
-                return (
-                    <div
-                        key={character}
-                        className="flex flex-col items-center gap-2 text-2xl">
-
-                        <img
-                            onClick={() => setSelectedCharacter(character)}
-                            src={`/${character}.png`}
-                            className={`cursor-pointer ${selectedCharacter === character ? 'border border-white-500' : ''}`}
-                        />
-                        {character}
-                    </div>
-                );
-            })}
-        </div>
-
-        <button
-            className="bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md mt-8"
-            onClick={async () => {
-                const adventureId = await createAdventure({
-                    character: selectedCharacter,
-                });
-                router.push(`/adventures/${adventureId}`);
-            }}
-        >
-            Start Adventure
-        </button>
+        <div className="grid grid-cols-3 gap-8">
+        {["warrior", "wizard", "archer"].map((character) => {
+          return (
+            <div
+              key={character}
+              className="flex flex-col items-center gap-2 text-2xl"
+            >
+              <img
+                onClick={() => setSelectedCharacter(character)}
+                src={`/${character}.png`}
+                className={
+                  selectedCharacter === character ? "border border-white" : ""
+                }
+              />
+              {character}
+            </div>
+          );
+        })}
+      </div>
+      <button
+        className="bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md"
+        onClick={async () => {
+          const adventureId = await createAdventure({
+            character: selectedCharacter,
+          });
+          router.push(`/adventures/${adventureId}`);
+        }}
+      >
+        Start an Adventure
+      </button>
     </div>
-    );
-
-};
+  );
+}

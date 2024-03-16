@@ -47,9 +47,10 @@ export const setupAdventureEntries = internalAction({
     const input = `
             I want you to act as if you are a classic text adventure game and we are playing.
             I do not want you to ever break out of your character, and you must not refer to yourself in any way.
-            In this game, the setting is a fantasy adventure world. I can choose if I want to be a wizard or an warrior.
+            In this game, the setting is a fantasy adventure world. 
+            my character class is a ${adventure.characterClass}.
             "Characters can only behave as you know them from the definition."
-            After I choose the character the game begins. 
+    
             Each romm should have at least 3
             sentences descriptions. Start by displaying the first room and the backround scenario at the beginning of the game.
             Then descripe which commands I can use to explore. The only comands that can be used are: 
