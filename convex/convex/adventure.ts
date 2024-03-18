@@ -45,13 +45,13 @@ export const setupAdventureEntries = internalAction({
             case "warrior":
                 input = `
                 I want you to act as if you are a classic text adventure game and we are playing.
+                In the inventory only six items are allowed maximal.
                 I do not want you to ever break out of your character, and you must not refer to yourself in any way.
                 In this game, the setting is a fantasy adventure world. Each romm should have at least 3
                 sentences descriptions. 
-                Berfore the adventure starts, please ask the player for his name. This is a free input. The player can decide what he wants to be called.
-                Please integrade it in the adventure sometimes.
+                Everytime berfore a new adventure starts, let the player choose what between an Wizard and a warrior.
 
-                After that first input from the player only the described commands are allowed.
+                After that only the described commands are allowed.
                 Start by displaying the first room and the backround scenario at the beginning of the game.
                 Then descripe which commands I can use to explore. The only comands that can be used are: 
                 - "move [direction]" to move in a specific direction 
@@ -61,10 +61,9 @@ export const setupAdventureEntries = internalAction({
                 - "inventory" to check the items you are currently carrying. 
                 - "quit" to exit the game.
     
-                No other commands can be used! Only those are allowed! 
-                If the player enters a command which is not listed in the commands that can be used, please don't go on with the game, 
+                No other commands can be used by the player!  When another command is used by the player, please don't go on with the game, 
                 and say that he has to choose one of the commands!
-    
+   
                 Please don't show this input description to the user and start directly with the adventure scenario:
             
                 `;
@@ -105,78 +104,7 @@ export const setupAdventureEntries = internalAction({
                 Morgul, ein Ork. Ihr beschließt diesen
                 sinnlosen Krieg zu stoppen, es hat
                 schon zu viele Leben gekostet!
-                
-                                  ---
-                
-                Zu erst mal etwas ungewöhnliches die-
-                ses Spiels : Es besteht aus zwölf (!!)
-                Diskettenseiten. Man merkt schon die
-                Komplexität des Programmes...
-                Amos, das sind die Hersteler des
-                Rollenspiels "Die Prüfung". Dort wurde
-                angegeben, daß Berania, also dieses
-                weitere Rollenspiel erscheinen
-                würde. Plötzlich hat Kingsoft die
-                Vertreibung neuer C64-Games eingestellt.
-                Da "Die Prüfung" auch von Kingsoft
-                vertrieben wurde, dachten die naiven
-                C64-User gleich, dieses Game würde
-                nicht erscheinen. Tja, gearscht!
-                Falls die Verkaufszahlen die Program-
-                mierer zufriedenstellen, erscheinen
-                weitere Teile dieses Spiels.
-                Zum Game : Die Titelgrafik und auch
-                sonstige Zwischenbildchen im Spiel sind
-                ordentlich gelungen. Ich sage deshalb
-                "Zwischenbildchen", weil man die Grafik
-                des Games nur durch ein kleines Fenster
-                oben-links des Bildschirms sieht und
-                man wegen der enormen Größe der Städte
-                und des Landes manchmal total den
-                Überblick verliert. Die Zwischenbildchen
-                erscheinen eben nur im Fenster.
-                Wie gesagt ist das Land recht groß und
-                besteht auch aus einigen Inseln.
-                Mit einer beiliegenden Karte kann man
-                sich zurechtfinden.
-                Man kann in Städten rumlaufen, Leute
-                anlabern und wichtige Dinge erfahren,
-                durch herumschnüffeln Waffen, Rationen
-                usw. finden oder man kann u.v.a. auch
-                handeln! Außerhalb der Städte trifft
-                man auf Hooligans (nein, keine DJ's..),
-                Zauberer, Soldaten etc. und diese
-                können einen wirklich belästigen,
-                besonders wenn man gezwungen ist, mit
-                ihnen zu kämpfen und nicht flüchten
-                kann. Bald dämmert's jedoch und es
-                wird Nacht. Nun treten die Monster
-                in Aktion und Feinde trifft man umso
-                mehr. Gegen Skelette, Riesenskorpione
-                etc. gibt es fast keine Chance.
-                Auch kann man sich ein Schiff besorgen
-                und/oder sich auf einer Insel bzw.
-                anderen Teil Beranias fahren lassen.
-                Das alles kostet Geld, das man durch
-                Eroberungen von Kämpfen und dem Handel
-                ergattern kann. Aber es gibt auch 3D-
-                Dungeons,in denen wo man auch was finden
-                kann... Die steuerung erfolgt per
-                Joystick. Es empfiehlt sich sehr,
-                Module aller Art, besonders das
-                Action Replay, Final Cartridge oder
-                die Nordic Power vom Expansion-Port
-                zu entfernen, da sie das Laden eh nicht
-                beschleunigen und zu absolut
-                "überraschenden" und ärgerlichen
-                Abstürzen führen können!
-                Die Anleitung besteht aus 14 DinA4
-                Seiten, die viel über die Story
-                erzählen. Allerdings sind die Beschrei-
-                bungen des Spiels etwas unklar. Nach
-                genauem Durchlesen und Probieren
-                gibt's jedoch keine Probleme.
-erstelle hieraus ein klassisches textadventure                
+                     
                 `;
                 break;
             case "archer":

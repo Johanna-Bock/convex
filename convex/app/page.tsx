@@ -1,8 +1,6 @@
-"use client";
-
-import { useState } from 'react';
+"use client";import { useState } from 'react';
 import { useMutation } from 'convex/react';
-import { api } from '@/convex/_generated/api'; // Überprüfen Sie, ob der Importpfad korrekt ist
+import { api } from '@/convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import { CircularProgress } from '@mui/material';
 
@@ -22,7 +20,16 @@ export default function Main() {
     };
 
     return (
-        <div className='flex flex-col items-center justify-center w-full h-screen' style={{ backgroundColor: 'black', color: 'white', fontSize: '30px', fontFamily: 'Courier', fontWeight: 'bold', textShadow: '0 0 5px white' }}>
+        <div className='flex flex-col items-center justify-center w-full h-screen' style={{ 
+            backgroundImage: `url('/karte.png')`, 
+            color: 'white', 
+            fontSize: '30px', 
+            fontFamily: 'Courier', 
+            fontWeight: 'bold', 
+            textShadow: '0 0 5px white',
+            backgroundSize: 'cover', // Hintergrundbild so skalieren, dass es den gesamten Bereich abdeckt
+            backgroundPosition: 'center', // Hintergrundbild zentrieren
+            }}>
             <h1 className="mb-8">Willkommen zum Textadventure Game! Bitte wähle ein Szenario:</h1>
 
             <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>
@@ -46,9 +53,9 @@ export default function Main() {
             <button
                 className="bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md mt-8"
                 onClick={handleStartAdventure}
-                disabled={isLoading} // Deaktiviere den Button, während das Laden läuft
+                disabled={isLoading}
             >
-                {isLoading ? <CircularProgress size={24} color="inherit" /> : "Start Adventure"} {/* Zeige das Ladesymbol, wenn isLoading true ist */}
+                {isLoading ? <CircularProgress size={24} color="inherit" /> : "Start Adventure"}
             </button>
         </div>
     );
