@@ -1,20 +1,20 @@
 "use client";
 
-import { useMutation } from 'convex/react';
-import { createAdventure } from '../convex/adventure';
-import { api } from '@/convex/_generated/api';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { CircularProgress } from '@mui/material'; // Importiere das Ladesymbol von Material-UI
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api'; // Überprüfen Sie, ob der Importpfad korrekt ist
+import { useRouter } from 'next/navigation';
+import { CircularProgress } from '@mui/material';
 
 export default function Main() {
-    const [isLoading, setIsLoading] = useState(false); // Zustand für das Laden
+    const [isLoading, setIsLoading] = useState(false);
     const createAdventureMutation = useMutation(api.adventure.createAdventure);
     const router = useRouter();
     const [selectedCharacter, setSelectedCharacter] = useState("warrior");
 
     const handleStartAdventure = async () => {
-        setIsLoading(true); // Setze isLoading auf true, um das Ladesymbol anzuzeigen
+        setIsLoading(true);
+        // Übergeben Sie das ausgewählte Character an die Mutation
         const adventureId = await createAdventureMutation({
             character: selectedCharacter,
         });
