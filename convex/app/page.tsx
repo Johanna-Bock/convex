@@ -1,4 +1,5 @@
-"use client";import { useState } from 'react';
+"use client";
+import { useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useRouter } from 'next/navigation';
@@ -6,15 +7,25 @@ import { CircularProgress } from '@mui/material';
 
 export default function Main() {
     const [isLoading, setIsLoading] = useState(false);
-    const createAdventure = useMutation(api.adventure.createAdventure);
+    const createAdventureMutation = useMutation(api.adventure.createAdventure);
     const router = useRouter();
     const [selectedScenario, setSelectedScenario] = useState("fantasy");
+    const [selectedCharacter, setSelectedCharacter] = useState(""); // Zustand für den ausgewählten Charakter
 
     const handleStartAdventure = async () => {
         setIsLoading(true);
-        // Übergeben Sie das ausgewählte Character an die Mutation
-        const adventureId = await createAdventure({
+        
+        // Überprüfen Sie, ob ein Charakter ausgewählt wurde
+        if (!selectedCharacter) {
+            alert("Bitte wählen Sie zuerst einen Charakter aus."); // Hier könnten Sie auch eine benutzerfreundlichere Benachrichtigung verwenden
+            setIsLoading(false);
+            return;
+        }
+
+        // Übergeben Sie das ausgewählte Szenario und den ausgewählten Charakter an die Mutation
+        const adventureId = await createAdventureMutation({
             scenario: selectedScenario,
+            character: selectedCharacter,
         });
         router.push(`/adventures/${adventureId}`);
     };
@@ -49,6 +60,25 @@ export default function Main() {
                     );
                 })}
             </div>
+
+            {/* Auswahl der Charaktere vor jedem Szenario */}
+            {selectedScenario && (
+                <div className="flex flex-col items-center gap-2 mt-4">
+                    <h2>Wählen Sie Ihren Charakter:</h2>
+                    <button
+                        className={`bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md ${selectedCharacter === "Wizard" ? 'border border-white-500' : ''}`}
+                        onClick={() => setSelectedCharacter("Wizard")}
+                    >
+                        wizzard
+                    </button>
+                    <button
+                        className={`bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md ${selectedCharacter === "Warrior" ? 'border border-white-500' : ''}`}
+                        onClick={() => setSelectedCharacter("Warrior")}
+                    >
+                        warrior
+                    </button>
+                </div>
+            )}
 
             <button
                 className="bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md mt-8"

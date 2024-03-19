@@ -8,15 +8,18 @@ const openai = new OpenAI();
 export const createAdventure = mutation({
     args: {
         scenario: v.string(),
+        character: v.string(),
     },
-    handler: async (ctx, args) =>{
+    handler: async (ctx, args) => {
         const id = await ctx.db.insert("adventures", {
             scenarioClass: args.scenario,
+            character: args.character,
         });
 
         await ctx.scheduler.runAfter(0, internal.adventure.setupAdventureEntries, {
             adventureId: id,
             scenario: args.scenario,
+            character: args.character,
         });
 
         return id;
@@ -36,6 +39,7 @@ export const setupAdventureEntries = internalAction({
     args: {
         adventureId: v.id("adventures"),
         scenario: v.string(),
+        character: v.string(),
     },
     handler: async (ctx, args) => {
         let input = ""; // Definieren Sie den Input
@@ -43,33 +47,32 @@ export const setupAdventureEntries = internalAction({
         // Generieren Sie verschiedene Inputs basierend auf dem ausgewählten Character
         switch (args.scenario) {
             case "fantasy":
-                input = `
+                input = ` You are a ${args.character}. Tell the player which character he is and start the adventure:
                 I want you to act as if you are a classic text adventure game and we are playing.
                 In the inventory only six items are allowed maximal.
                 I do not want you to ever break out of your character, and you must not refer to yourself in any way.
-                In this game, the setting is a fantasy adventure world. Each romm should have at least 3
-                sentences descriptions. 
-                Everytime berfore a new adventure starts, let the player choose what between an Wizard and a warrior.
+                In this game, the setting is a fantasy adventure world. Each room should have at least 3 sentences descriptions. 
+                Every time before a new adventure starts, let the player choose what between an Wizard and a warrior.
 
                 After that only the described commands are allowed.
-                Start by displaying the first room and the backround scenario at the beginning of the game.
-                Then descripe which commands I can use to explore. The only comands that can be used are: 
+                Start by displaying the first room and the background scenario at the beginning of the game.
+                Then describe which commands I can use to explore. The only commands that can be used are: 
                 - "move [direction]" to move in a specific direction 
-                - "look" to observe your immediate surroundings. - 
-                "search" to search for any hidden objects or passages. 
-                - "take [item]" to pick up an item if it is present. 
-                - "inventory" to check the items you are currently carrying. 
+                - "look" to observe your immediate surroundings.
+                - "search" to search for any hidden objects or passages.
+                - "take [item]" to pick up an item if it is present.
+                - "inventory" to check the items you are currently carrying.
                 - "quit" to exit the game.
     
                 No other commands can be used by the player!  When another command is used by the player, please don't go on with the game, 
                 and say that he has to choose one of the commands!
    
                 Please don't show this input description to the user and start directly with the adventure scenario:
-            
+                
                 `;
                 break;
             case "future":
-                input = `
+                input = ` you are a ${args.character}. 
                 Wälder mit schönstem Grün, Luft der
                 saubersten Art, Wasser der erfrischend-
                 sten Sorte, Himmel mit dem schönsten
@@ -84,17 +87,17 @@ export const setupAdventureEntries = internalAction({
                 will alle Eemen und Orks aussterben
                 lassen. Jedoch sind beide Rassen
                 sehr schwer zu besiegen. Zum einen
-                sind die Eemen (mischung aus Menschen
-                und den ausgerottenen Elfen) schlau
+                sind die Eemen (Mischung aus Menschen
+                und den ausgerotteten Elfen) schlau
                 und benutzen viel von ihrer Magie,
                 zum anderen sind sie im Kampf fast
                 genauso kalt wie die unglaublich
                 starken und brutalen Orks, die neben
-                vielen gewonnen Schlachten auch viele
+                vielen gewonnenen Schlachten auch viele
                 Niederlagen zu "leiden" hatten.
                 Allerdings sind keiner dieser Rassen
                 wirklich schlechtmütig.
-                Aber Karsas will, daß nur die Menschen
+                Aber Karsas will, dass nur die Menschen
                 überleben...          ___
                 Eines Tages stehen jedoch zwei fin-
                 stere Gestalten vor deiner Tür.
@@ -104,7 +107,7 @@ export const setupAdventureEntries = internalAction({
                 Morgul, ein Ork. Ihr beschließt diesen
                 sinnlosen Krieg zu stoppen, es hat
                 schon zu viele Leben gekostet!
-                     
+                
                 `;
                 break;
             case "zork":
@@ -121,8 +124,7 @@ export const setupAdventureEntries = internalAction({
                   The ultimate goal of Zork I is to collect the Nineteen Treasures of Zork and install them in the trophy case. Finding the treasures requires solving a variety of puzzles such as the navigation of two brutal mazes and some intricate manipulations
                   Each room should have at least 3 sentence descriptions. 
                   Start by displaying an adventure out of this information and describe the first scenary and wait for me to give you my first command.
-
-               
+                  Character: ${args.character}
                 `;
                 break;
             default:
