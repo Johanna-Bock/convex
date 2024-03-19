@@ -52,8 +52,6 @@ export const setupAdventureEntries = internalAction({
                 In the inventory only six items are allowed maximal.
                 I do not want you to ever break out of your character, and you must not refer to yourself in any way.
                 In this game, the setting is a fantasy adventure world. Each room should have at least 3 sentences descriptions. 
-                Every time before a new adventure starts, let the player choose what between an Wizard and a warrior.
-
                 After that only the described commands are allowed.
                 Start by displaying the first room and the background scenario at the beginning of the game.
                 Then describe which commands I can use to explore. The only commands that can be used are: 
