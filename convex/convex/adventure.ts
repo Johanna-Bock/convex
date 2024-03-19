@@ -9,17 +9,20 @@ export const createAdventure = mutation({
     args: {
         scenario: v.string(),
         character: v.string(),
+        playerName: v.string(),
     },
     handler: async (ctx, args) => {
         const id = await ctx.db.insert("adventures", {
             scenarioClass: args.scenario,
             character: args.character,
+            playerName: args.playerName,
         });
 
         await ctx.scheduler.runAfter(0, internal.adventure.setupAdventureEntries, {
             adventureId: id,
             scenario: args.scenario,
             character: args.character,
+            playerName: args.playerName,
         });
 
         return id;
@@ -40,6 +43,7 @@ export const setupAdventureEntries = internalAction({
         adventureId: v.id("adventures"),
         scenario: v.string(),
         character: v.string(),
+        playerName: v.string(),
     },
     handler: async (ctx, args) => {
         let input = ""; // Definieren Sie den Input
@@ -47,7 +51,8 @@ export const setupAdventureEntries = internalAction({
         // Generieren Sie verschiedene Inputs basierend auf dem ausgewählten Character
         switch (args.scenario) {
             case "fantasy":
-                input = ` You are a ${args.character}. Tell the player which character he is and start the adventure:
+                
+                input = ` Use ${args.character} and ${args.playerName} to integrate it in the adventure.
                 I want you to act as if you are a classic text adventure game and we are playing.
                 In the inventory only six items are allowed maximal.
                 I do not want you to ever break out of your character, and you must not refer to yourself in any way.
@@ -68,6 +73,7 @@ export const setupAdventureEntries = internalAction({
                 Please don't show this input description to the user and start directly with the adventure scenario:
                 
                 `;
+                
                 break;
             case "future":
                 input = ` you are a ${args.character}. 
@@ -109,20 +115,8 @@ export const setupAdventureEntries = internalAction({
                 `;
                 break;
             case "zork":
-                input = `
-                I want you to act as if you are a classic text adventure game and we are playing.
-                 I do not want you to ever break out of your character, and you must not refer to yourself in any way. 
-                 If I want to give you instructions outside the context of the game, I will use curly brackets {like this} but otherwise you are to stick to being the text adventure program. 
-                In this game, we have the Zork calendar year 948. 
-                The game begins near a White House in a small, self-contained area. 
-                When the player wants to enter the house, he can find some objects like: an ancient brass lantern, an empty trophy case,an intricately engraved sword. 
-                Beneath the rug a trap door leads down into a dark dungeon.
-                But what initially appears to be a dungeon is actually one of several entrances to a vast subterranean land--the Great Underground Empire.
-                The player soon encounters dangerous creatures, including deadly grues, an axe-wielding troll, a giant cyclops and a nimble-fingered thief.
-                  The ultimate goal of Zork I is to collect the Nineteen Treasures of Zork and install them in the trophy case. Finding the treasures requires solving a variety of puzzles such as the navigation of two brutal mazes and some intricate manipulations
-                  Each room should have at least 3 sentence descriptions. 
-                  Start by displaying an adventure out of this information and describe the first scenary and wait for me to give you my first command.
-                  Character: ${args.character}
+                input = `Use ${args.character} and ${args.playerName} to integrate it in the adventure.
+                
                 `;
                 break;
             default:

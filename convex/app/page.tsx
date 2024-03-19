@@ -1,5 +1,4 @@
-"use client";
-import { useState } from 'react';
+"use client";import { useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useRouter } from 'next/navigation';
@@ -11,6 +10,7 @@ export default function Main() {
     const router = useRouter();
     const [selectedScenario, setSelectedScenario] = useState("fantasy");
     const [selectedCharacter, setSelectedCharacter] = useState(""); // Zustand für den ausgewählten Charakter
+    const [playerName, setPlayerName] = useState(""); // Zustand für den Spielername
 
     const handleStartAdventure = async () => {
         setIsLoading(true);
@@ -22,10 +22,18 @@ export default function Main() {
             return;
         }
 
-        // Übergeben Sie das ausgewählte Szenario und den ausgewählten Charakter an die Mutation
+        // Überprüfen, ob der Spielername eingegeben wurde
+        if (!playerName) {
+            alert("Bitte geben Sie Ihren Namen ein.");
+            setIsLoading(false);
+            return;
+        }
+
+        // Übergeben Sie das ausgewählte Szenario, den ausgewählten Charakter und den Spielername an die Mutation
         const adventureId = await createAdventureMutation({
             scenario: selectedScenario,
             character: selectedCharacter,
+            playerName: playerName // Hinzufügen des Spielername
         });
         router.push(`/adventures/${adventureId}`);
     };
@@ -77,6 +85,20 @@ export default function Main() {
                     >
                         warrior
                     </button>
+                </div>
+            )}
+
+            {/* Eingabe des Spielername */}
+            {selectedCharacter && (
+                <div className="flex flex-col items-center gap-2 mt-4">
+                    <h2>Geben Sie Ihren Namen ein:</h2>
+                    <input
+                        type="text"
+                        value={playerName}
+                        onChange={(e) => setPlayerName(e.target.value)}
+                        placeholder="Ihr Name"
+                        className="bg-gray-300 px-2 py-1 rounded-md"
+                    />
                 </div>
             )}
 

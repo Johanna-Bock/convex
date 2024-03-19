@@ -10,5 +10,6 @@ export default defineSchema({
   adventures: defineTable({
     scenarioClass: v.string(),
     character: v.string(),
+    playerName: v.string(),
   }),
 });
