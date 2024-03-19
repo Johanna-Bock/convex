@@ -7,16 +7,16 @@ const openai = new OpenAI();
 
 export const createAdventure = mutation({
     args: {
-        character: v.string(),
+        scenario: v.string(),
     },
     handler: async (ctx, args) =>{
         const id = await ctx.db.insert("adventures", {
-            characterClass: args.character,
+            scenarioClass: args.scenario,
         });
 
         await ctx.scheduler.runAfter(0, internal.adventure.setupAdventureEntries, {
             adventureId: id,
-            character: args.character,
+            scenario: args.scenario,
         });
 
         return id;
@@ -35,14 +35,14 @@ export const getAdventure = internalQuery({
 export const setupAdventureEntries = internalAction({
     args: {
         adventureId: v.id("adventures"),
-        character: v.string(),
+        scenario: v.string(),
     },
     handler: async (ctx, args) => {
         let input = ""; // Definieren Sie den Input
 
         // Generieren Sie verschiedene Inputs basierend auf dem ausgewählten Character
-        switch (args.character) {
-            case "warrior":
+        switch (args.scenario) {
+            case "fantasy":
                 input = `
                 I want you to act as if you are a classic text adventure game and we are playing.
                 In the inventory only six items are allowed maximal.
@@ -68,7 +68,7 @@ export const setupAdventureEntries = internalAction({
             
                 `;
                 break;
-            case "wizard":
+            case "future":
                 input = `
                 Wälder mit schönstem Grün, Luft der
                 saubersten Art, Wasser der erfrischend-
@@ -107,9 +107,22 @@ export const setupAdventureEntries = internalAction({
                      
                 `;
                 break;
-            case "archer":
+            case "zork":
                 input = `
-                    Hier ist der Input für den Archer-Character.
+                I want you to act as if you are a classic text adventure game and we are playing.
+                 I do not want you to ever break out of your character, and you must not refer to yourself in any way. 
+                 If I want to give you instructions outside the context of the game, I will use curly brackets {like this} but otherwise you are to stick to being the text adventure program. 
+                In this game, we have the Zork calendar year 948. 
+                The game begins near a White House in a small, self-contained area. 
+                When the player wants to enter the house, he can find some objects like: an ancient brass lantern, an empty trophy case,an intricately engraved sword. 
+                Beneath the rug a trap door leads down into a dark dungeon.
+                But what initially appears to be a dungeon is actually one of several entrances to a vast subterranean land--the Great Underground Empire.
+                The player soon encounters dangerous creatures, including deadly grues, an axe-wielding troll, a giant cyclops and a nimble-fingered thief.
+                  The ultimate goal of Zork I is to collect the Nineteen Treasures of Zork and install them in the trophy case. Finding the treasures requires solving a variety of puzzles such as the navigation of two brutal mazes and some intricate manipulations
+                  Each room should have at least 3 sentence descriptions. 
+                  Start by displaying an adventure out of this information and describe the first scenary and wait for me to give you my first command.
+
+               
                 `;
                 break;
             default:

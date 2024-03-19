@@ -8,6 +8,6 @@ export default defineSchema({
     adventureId: v.id("adventures"),
   }),
   adventures: defineTable({
-    characterClass: v.string(),
+    scenarioClass: v.string(),
   }),
 });

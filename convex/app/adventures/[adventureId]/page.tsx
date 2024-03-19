@@ -34,8 +34,8 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
                 <div key={entry._id} className="flex flex-col gap-10 text-white">
                   {isCurrentEntryFirst ? null : (
                     <div className="flex flex-col gap-4" style={{ fontSize: '22px', fontFamily: 'Courier' }}> {/* Erhöhter Abstand */}
-                      <span style={{ marginRight: '30px' }}>You:</span>
-                      <hr />
+                      <span style={{ marginRight: '10px' }}>You:</span>
+                      <hr/>
                       {entry.input}
                     </div>
                   )}
@@ -43,7 +43,7 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
                     Dungeon Master:
                     <hr />
                     {entry.response}
-                    <div></div>
+                    <div className="gap-30"></div>
                     <div className="gap-30"></div>
                   </div>
                 </div>

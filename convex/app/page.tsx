@@ -6,15 +6,15 @@ import { CircularProgress } from '@mui/material';
 
 export default function Main() {
     const [isLoading, setIsLoading] = useState(false);
-    const createAdventureMutation = useMutation(api.adventure.createAdventure);
+    const createAdventure = useMutation(api.adventure.createAdventure);
     const router = useRouter();
-    const [selectedCharacter, setSelectedCharacter] = useState("warrior");
+    const [selectedScenario, setSelectedScenario] = useState("fantasy");
 
     const handleStartAdventure = async () => {
         setIsLoading(true);
         // Übergeben Sie das ausgewählte Character an die Mutation
-        const adventureId = await createAdventureMutation({
-            character: selectedCharacter,
+        const adventureId = await createAdventure({
+            scenario: selectedScenario,
         });
         router.push(`/adventures/${adventureId}`);
     };
@@ -33,18 +33,18 @@ export default function Main() {
             <h1 className="mb-8">Willkommen zum Textadventure Game! Bitte wähle ein Szenario:</h1>
 
             <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>
-                {['warrior', 'wizard', 'archer'].map(character => {
+                {['fantasy', 'future', 'zork'].map(scenario => {
                     return (
                         <div
-                            key={character}
+                            key={scenario}
                             className="flex flex-col items-center gap-2 text-2xl">
 
                             <img
-                                onClick={() => setSelectedCharacter(character)}
-                                src={`/${character}.png`}
-                                className={`cursor-pointer ${selectedCharacter === character ? 'border border-white-500' : ''}`}
+                                onClick={() => setSelectedScenario(scenario)}
+                                src={`/${scenario}.png`}
+                                className={`cursor-pointer ${selectedScenario === scenario ? 'border border-white-500' : ''}`}
                             />
-                            {character}
+                            {scenario}
                         </div>
                     );
                 })}
