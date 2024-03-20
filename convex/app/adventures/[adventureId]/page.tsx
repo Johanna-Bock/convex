@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from 'react';
 import { useAction, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
+import { CircularProgress } from '@mui/material'; // Import des CircularProgress-Komponenten aus Material-UI
 
 export default function Adventure(props: { params: { adventureId: Id<"adventures"> } }) {
   const handlePlayerAction = useAction(api.chat.handlePlayerAction);
@@ -11,6 +12,7 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
   const entries = useQuery(api.chat.getAllEntries, { adventureId });
   const [message, setMessage] = useState('');
   const messageEndRef = useRef<HTMLDivElement>(null); // Referenz für das Ende des Nachrichtencontainers
+  const [isLoading, setIsLoading] = useState(false); // Zustand für das Laden des Chat-GPT
   let isFirstEntry = true;
 
   useEffect(() => {
@@ -19,6 +21,19 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [entries]); // Überwacht Änderungen an den Einträgen
+
+  // Funktion zum Senden der Benutzeraktion
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true); // Setzt den Ladezustand auf true, wenn die Benutzeraktion gesendet wird
+    handlePlayerAction({
+      message,
+      adventureId,
+    }).then(() => {
+      setMessage('');
+      setIsLoading(false); // Setzt den Ladezustand auf false, wenn die Benutzeraktion abgeschlossen ist
+    });
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24" style={{ backgroundColor: 'black', color: 'white' }}>
@@ -53,24 +68,22 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
             <div ref={messageEndRef} />
           </div>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handlePlayerAction({
-                message,
-                adventureId,
-              });
-              setMessage('');
-            }}
-          >
-            <input
+          {/* Formular zum Senden der Benutzeraktion */}
+          <form onSubmit={handleSubmit}>
+          <input
               className="p-1 rounded text-black"
               name="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-
-            <button>Submit</button>
+            {/* Anzeigen des Ladebalkens, wenn isLoading true ist */}
+            <div style={{ marginRight: '50px', marginTop: '5px'  }}> {/* Hier wird die margin-left Eigenschaft hinzugefügt */}
+              {isLoading ? (
+                <CircularProgress size={24} style={{ color: '#FFFFFF' }} /> 
+              ) : (
+                <button type="submit" style={{ marginRight: '50px' }}>Submit</button>
+              )}
+            </div>
           </form>
         </div>
       </div>
