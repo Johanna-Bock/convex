@@ -76,13 +76,13 @@ export default function Main() {
                         className={`bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md ${selectedCharacter === "Zauberer" ? 'border border-white-500' : ''}`}
                         onClick={() => setSelectedCharacter("Zauberer")}
                     >
-                        wizzard
+                        Zauberer
                     </button>
                     <button
                         className={`bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md ${selectedCharacter === "Krieger" ? 'border border-white-500' : ''}`}
                         onClick={() => setSelectedCharacter("Krieger")}
                     >
-                        warrior
+                        Krieger
                     </button>
                 </div>
             )}
