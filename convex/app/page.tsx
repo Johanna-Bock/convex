@@ -1,4 +1,6 @@
-"use client";import { useState } from 'react';
+"use client";
+
+import { useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useRouter } from 'next/navigation';
@@ -8,32 +10,29 @@ export default function Main() {
     const [isLoading, setIsLoading] = useState(false);
     const createAdventureMutation = useMutation(api.adventure.createAdventure);
     const router = useRouter();
-    const [selectedScenario, setSelectedScenario] = useState("fantasy");
-    const [selectedCharacter, setSelectedCharacter] = useState(""); // Zustand für den ausgewählten Charakter
-    const [playerName, setPlayerName] = useState(""); // Zustand für den Spielername
+    const [selectedScenario, setSelectedScenario] = useState("");
+    const [selectedCharacter, setSelectedCharacter] = useState("");
+    const [playerName, setPlayerName] = useState("");
 
     const handleStartAdventure = async () => {
         setIsLoading(true);
         
-        // Überprüfen Sie, ob ein Charakter ausgewählt wurde
         if (!selectedCharacter) {
-            alert("Bitte wählen Sie zuerst einen Charakter aus."); // Hier könnten Sie auch eine benutzerfreundlichere Benachrichtigung verwenden
+            alert("Bitte wählen Sie zuerst einen Charakter aus.");
             setIsLoading(false);
             return;
         }
 
-        // Überprüfen, ob der Spielername eingegeben wurde
         if (!playerName) {
             alert("Bitte geben Sie Ihren Namen ein.");
             setIsLoading(false);
             return;
         }
 
-        // Übergeben Sie das ausgewählte Szenario, den ausgewählten Charakter und den Spielername an die Mutation
         const adventureId = await createAdventureMutation({
             scenario: selectedScenario,
             character: selectedCharacter,
-            playerName: playerName // Hinzufügen des Spielername
+            playerName: playerName
         });
         router.push(`/adventures/${adventureId}`);
     };
@@ -46,13 +45,13 @@ export default function Main() {
             fontFamily: 'Courier', 
             fontWeight: 'bold', 
             textShadow: '0 0 5px white',
-            backgroundSize: 'cover', // Hintergrundbild so skalieren, dass es den gesamten Bereich abdeckt
-            backgroundPosition: 'center', // Hintergrundbild zentrieren
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             }}>
             <h1 className="mb-8">Willkommen zum Textadventure Game! Bitte wähle ein Szenario:</h1>
 
             <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>
-                {['fantasy', 'future', 'zork'].map(scenario => {
+                {['fantasy', 'mystery', 'zork'].map(scenario => {
                     return (
                         <div
                             key={scenario}
@@ -62,6 +61,7 @@ export default function Main() {
                                 onClick={() => setSelectedScenario(scenario)}
                                 src={`/${scenario}.png`}
                                 className={`cursor-pointer ${selectedScenario === scenario ? 'border border-white-500' : ''}`}
+                                style={{ width: '400px', height: '200px' }} // Setze die Größe der Bilder hier
                             />
                             {scenario}
                         </div>
@@ -69,26 +69,24 @@ export default function Main() {
                 })}
             </div>
 
-            {/* Auswahl der Charaktere vor jedem Szenario */}
             {selectedScenario && (
                 <div className="flex flex-col items-center gap-2 mt-4">
                     <h2>Wählen Sie Ihren Charakter:</h2>
                     <button
-                        className={`bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md ${selectedCharacter === "Wizard" ? 'border border-white-500' : ''}`}
-                        onClick={() => setSelectedCharacter("Wizard")}
+                        className={`bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md ${selectedCharacter === "Zauberer" ? 'border border-white-500' : ''}`}
+                        onClick={() => setSelectedCharacter("Zauberer")}
                     >
                         wizzard
                     </button>
                     <button
-                        className={`bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md ${selectedCharacter === "Warrior" ? 'border border-white-500' : ''}`}
-                        onClick={() => setSelectedCharacter("Warrior")}
+                        className={`bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md ${selectedCharacter === "Krieger" ? 'border border-white-500' : ''}`}
+                        onClick={() => setSelectedCharacter("Krieger")}
                     >
                         warrior
                     </button>
                 </div>
             )}
 
-            {/* Eingabe des Spielername */}
             {selectedCharacter && (
                 <div className="flex flex-col items-center gap-2 mt-4">
                     <h2>Geben Sie Ihren Namen ein:</h2>

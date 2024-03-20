@@ -48,40 +48,31 @@ export const setupAdventureEntries = internalAction({
     handler: async (ctx, args) => {
         let input = ""; // Definieren Sie den Input
 
-        // Generieren Sie verschiedene Inputs basierend auf dem ausgewählten Character
+        // Generieren Sie verschiedene Inputs 
         switch (args.scenario) {
-            case "fantasy":
+            case "mystery":
                 
-                input = ` Use ${args.character} and ${args.playerName} to integrate it in the adventure.
-                I want you to act as if you are a classic text adventure game and we are playing.
-                In the inventory only six items are allowed maximal.
-                I do not want you to ever break out of your character, and you must not refer to yourself in any way.
-                In this game, the setting is a fantasy adventure world. Each room should have at least 3 sentences descriptions. 
-                After that only the described commands are allowed.
-                Start by displaying the first room and the background scenario at the beginning of the game.
-                Then describe which commands I can use to explore. The only commands that can be used are: 
-                - "move [direction]" to move in a specific direction 
-                - "look" to observe your immediate surroundings.
-                - "search" to search for any hidden objects or passages.
-                - "take [item]" to pick up an item if it is present.
-                - "inventory" to check the items you are currently carrying.
-                - "quit" to exit the game.
-    
-                No other commands can be used by the player!  When another command is used by the player, please don't go on with the game, 
-                and say that he has to choose one of the commands!
-   
-                Please don't show this input description to the user and start directly with the adventure scenario:
+                input = ` 
+                Wir spielen zusammen das klassische Textadventure Spiel!
+                Du bist Dungeon Master und ich der Spieler.
+                Ich möchte dass du niemals deinen Character verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhälst.
+                Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
+                Du darfst nicht für den Spieler entscheiden was als nächstes passiert. 
+                Das Szenario das du dem Spieler beschreibst sieht folgendermaßen aus:
+                Wir befinden uns in einem mysteriösen Kriminalfall.
+                der Name des Spielers ist ${args.playerName} und er ist ein ${args.character}.
+               Du entscheidest nicht für den Spieler!  Als Dungeon Master sprichst du den Spiler direkt an.
+
+              
                 
                 `;
                 
                 break;
-            case "future":
-                input = ` you are a ${args.character}. 
-                Wälder mit schönstem Grün, Luft der
-                saubersten Art, Wasser der erfrischend-
-                sten Sorte, Himmel mit dem schönsten
-                Blau, Früchte so saftig wie nichts
-                anderes, die interessantesten Inseln,
+            case "fantasy":
+                input = ` Wir spielen zusammen ein klassisches Textadventure Spiel!
+                
+                Das Szenario das du dem Spieler beschreibst sieht folgendermaßen aus:
+                "Wälder, Wasser, Früchte,
                 Berge höchster Größe und ein Kampf
                 der schlimmsten Art - das ist Berania!
                 Es herrscht Krieg zwischen den
@@ -98,24 +89,30 @@ export const setupAdventureEntries = internalAction({
                 genauso kalt wie die unglaublich
                 starken und brutalen Orks, die neben
                 vielen gewonnenen Schlachten auch viele
-                Niederlagen zu "leiden" hatten.
-                Allerdings sind keiner dieser Rassen
-                wirklich schlechtmütig.
-                Aber Karsas will, dass nur die Menschen
-                überleben...          ___
-                Eines Tages stehen jedoch zwei fin-
-                stere Gestalten vor deiner Tür.
-                Als du sie herein lässt, findest du
-                heraus wer es ist : Deine Halbschwester
-                Banshi, die Eeme und ihr Kumpane
-                Morgul, ein Ork. Ihr beschließt diesen
-                sinnlosen Krieg zu stoppen, es hat
-                schon zu viele Leben gekostet!
-                
+                Niederlagen zu "leiden" hatten."
+                Erstelle aus diesem Input ein Textadventure mit spannenden Abenteuern.
+                Du bist Dungeon Master und ich der Spieler.
+                Ich als spieler habe den Character ${args.character} und den Namen ${args.playerName}.
+                Ich möchte dass du niemals deinen Character verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhälst.
+                Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
+                Du darfst nicht für den Spieler entscheiden was als nächstes passiert. 
+                                
+                Du reagierst auf meine Antworten als richtiger Dungeon Master eines klassischen Textadventures!
+
                 `;
                 break;
             case "zork":
-                input = `Use ${args.character} and ${args.playerName} to integrate it in the adventure.
+                input = `
+                Wir spielen zusammen das klassische Textadventure Spiel Zork!
+                Du bist Dungeon Master und ich der Spieler.
+                Ich als spieler habe den Character ${args.character} und den Namen ${args.playerName}.
+                Ich möchte dass du niemals deinen Character verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhälst.
+                Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
+                Du darfst nicht für den Spieler entscheiden was als nächstes passiert. 
+                Das Szenario das du dem Spieler beschreibst sieht folgendermaßen aus:
+                Der Spieler steht auf freiem Feld westlich von einem weißen Haus, dessen Haustür mit Brettern vernagelt ist.
+Er sieht einen Briefkasten. der Name des Spielers ist ${args.playerName} und er ist ein ${args.character}.
+               Du entscheidest nicht für den Spieler!  Als Dungeon Master sprichst du den Spiler direkt an.
                 
                 `;
                 break;
