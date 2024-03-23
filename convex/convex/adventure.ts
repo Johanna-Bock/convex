@@ -52,16 +52,17 @@ export const setupAdventureEntries = internalAction({
         switch (args.scenario) {
             case "mystery":
                 
-                input = ` 
-                Wir spielen zusammen das klassische Textadventure Spiel!
-                Du bist Dungeon Master und ich der Spieler.
-                Ich möchte dass du niemals deinen Character verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhälst.
-                Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
-                Du darfst nicht für den Spieler entscheiden was als nächstes passiert. 
-                Das Szenario das du dem Spieler beschreibst sieht folgendermaßen aus:
-                Wir befinden uns in einem mysteriösen Kriminalfall.
-                der Name des Spielers ist ${args.playerName} und er ist ein ${args.character}.
-               Du entscheidest nicht für den Spieler!  Als Dungeon Master sprichst du den Spiler direkt an.
+                input = `Ich möchte dass du dich so verhälst als wärst du ein klassiches Textadventure Spiel
+                und wir spielen.
+Du bist Dungeon Master und ich der Spieler.
+Ich möchte, dass du niemals deinen Charakter verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhältst.
+Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
+Du darfst nicht für den Spieler entscheiden, was als nächstes passiert.
+Das Szenario, das du dem Spieler beschreibst, sieht folgendermaßen aus:
+Ich als Spieler befindet sich in einem mysteriösen Kriminalfall den du beschreibst.
+mein Name ist ${args.playerName} und ich bin ein ${args.character}.
+Deine Aufgabe ist es, auf meine Aktionen zu reagieren und die Geschichte voranzutreiben.
+
 
               
                 
@@ -97,7 +98,7 @@ export const setupAdventureEntries = internalAction({
                 Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
                 Du darfst nicht für den Spieler entscheiden was als nächstes passiert. 
                                 
-                Du reagierst auf meine Antworten als richtiger Dungeon Master eines klassischen Textadventures!
+                Deine Aufgabe ist es, auf meine Aktionen zu reagieren und die Geschichte voranzutreiben.
 
                 `;
                 break;
@@ -113,7 +114,8 @@ export const setupAdventureEntries = internalAction({
                 Der Spieler steht auf freiem Feld westlich von einem weißen Haus, dessen Haustür mit Brettern vernagelt ist.
 Er sieht einen Briefkasten. der Name des Spielers ist ${args.playerName} und er ist ein ${args.character}.
                Du entscheidest nicht für den Spieler!  Als Dungeon Master sprichst du den Spiler direkt an.
-                
+               Deine Aufgabe ist es, auf meine Aktionen zu reagieren und die Geschichte voranzutreiben.
+
                 `;
                 break;
             default:
