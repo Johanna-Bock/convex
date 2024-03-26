@@ -46,9 +46,9 @@ export const setupAdventureEntries = internalAction({
         playerName: v.string(),
     },
     handler: async (ctx, args) => {
-        let input = ""; // Definieren Sie den Input
+        let input = ""; // Definieren des Inputs
 
-        // Generieren Sie verschiedene Inputs 
+        // Generieren verschiedenre Inputs 
         switch (args.scenario) {
             case "mystery":
                 
@@ -56,13 +56,13 @@ export const setupAdventureEntries = internalAction({
                 und wir spielen.
 Du bist Dungeon Master und ich der Spieler.
 Ich möchte, dass du niemals deinen Charakter verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhältst.
-Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
+Jedes Szenario wird von dir mit maximal vier Sätzen beschrieben.
 Du darfst nicht für den Spieler entscheiden, was als nächstes passiert.
 Das Szenario, das du dem Spieler beschreibst, sieht folgendermaßen aus:
 Ich als Spieler befindet sich in einem mysteriösen Kriminalfall den du beschreibst.
 mein Name ist ${args.playerName} und ich bin ein ${args.character}.
-Deine Aufgabe ist es, auf meine Aktionen zu reagieren und die Geschichte voranzutreiben.
-
+Das Textadventure wird von dir erst beendet, wenn der Spieler den Kriminalfall erfolgreich gelöst hat oder wenn der Spieler in einem Kampf stirbt.
+Beschreibe zuerst die Szene dann beginnt das Abenteuer.
 
               
                 
@@ -91,14 +91,17 @@ Deine Aufgabe ist es, auf meine Aktionen zu reagieren und die Geschichte voranzu
                 starken und brutalen Orks, die neben
                 vielen gewonnenen Schlachten auch viele
                 Niederlagen zu "leiden" hatten."
-                Erstelle aus diesem Input ein Textadventure mit spannenden Abenteuern.
+                Erstelle aus diesem Input ein Textadventure mit einem Ziel dass es zu erreichen gilt.
+                Auf dem Weg dorthin stellst du mich immer wieder vor spannende Aufgaben und Gefahren.
                 Du bist Dungeon Master und ich der Spieler.
                 Ich als spieler habe den Character ${args.character} und den Namen ${args.playerName}.
                 Ich möchte dass du niemals deinen Character verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhälst.
                 Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
                 Du darfst nicht für den Spieler entscheiden was als nächstes passiert. 
+                Das Abenteuer ist erst beendet wenn ich das Ziel des Abenteuers erreicht habe oder in einem Kampf sterbe.
+                Beschreibe zuerst die Szene dann beginnt das Abenteuer.
+
                                 
-                Deine Aufgabe ist es, auf meine Aktionen zu reagieren und die Geschichte voranzutreiben.
 
                 `;
                 break;
@@ -108,13 +111,15 @@ Deine Aufgabe ist es, auf meine Aktionen zu reagieren und die Geschichte voranzu
                 Du bist Dungeon Master und ich der Spieler.
                 Ich als spieler habe den Character ${args.character} und den Namen ${args.playerName}.
                 Ich möchte dass du niemals deinen Character verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhälst.
-                Jedes Szenario wird von dir mit mindestens drei und maximal vier Sätzen beschrieben.
+                Jedes Szenario und jede Antwort wird von dir mit maximal vier Sätzen durch dich beschrieben.
                 Du darfst nicht für den Spieler entscheiden was als nächstes passiert. 
                 Das Szenario das du dem Spieler beschreibst sieht folgendermaßen aus:
                 Der Spieler steht auf freiem Feld westlich von einem weißen Haus, dessen Haustür mit Brettern vernagelt ist.
 Er sieht einen Briefkasten. der Name des Spielers ist ${args.playerName} und er ist ein ${args.character}.
-               Du entscheidest nicht für den Spieler!  Als Dungeon Master sprichst du den Spiler direkt an.
-               Deine Aufgabe ist es, auf meine Aktionen zu reagieren und die Geschichte voranzutreiben.
+                    In dem Haus befindet sich ein Dungeon. Das erzählst du mir aber nicht. Darin muss ich Gegner töten und jemanden befreien.
+                    Beschreibe zuerst die Szene dann beginnt das Abenteuer.
+                    Denke dir passend zu diesem Szenario ein Textadventure aus.
+                    Ich möchte dass du niemals deinen Character verlässt und dich wie ein richtiger Dungeon Master in einem Textadventure verhälst.
 
                 `;
                 break;
@@ -124,6 +129,7 @@ Er sieht einen Briefkasten. der Name des Spielers ist ${args.playerName} und er 
                 `;
                 break;
         }
+        
 
         // Weitere Verarbeitung des Inputs, z. B. mit OpenAI
         const completion = await openai.chat.completions.create({

@@ -30,9 +30,11 @@ export const handlePlayerAction = action({
       
     });
 
-    const prefix = entries.map(entry => {
-      return `${entry.input}\n\n${entry.response}`;
-    }).join("\n\n");
+    const prefix = entries
+      .map((entry) => {
+        return `${entry.input}\n\n${entry.response}`;
+      })
+      .join("\n\n");
 
     const userPrompt = args.message;
 
@@ -40,7 +42,7 @@ export const handlePlayerAction = action({
       messages: [{role: "user", content: `${prefix} ${userPrompt}`}],
       model: "gpt-3.5-turbo",
     });
-    const input = args.message;
+    const input = userPrompt;
     const response = completion.choices[0].message.content ??"";
 
     await ctx.runMutation(api.chat.insertEntry, {
@@ -62,6 +64,7 @@ export const insertEntry = mutation({
             input: args.input,
             response: args.response,
             adventureId: args.adventureId,
+           
         });
     },
 });
