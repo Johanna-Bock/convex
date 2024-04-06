@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.15.15",
     "convex": "^1.6.2",
     "next": "14.0.2",
     "react": "^18",

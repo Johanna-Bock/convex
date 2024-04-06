@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useRouter } from 'next/navigation';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, IconButton, Tooltip } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 export default function Main() {
     const [isLoading, setIsLoading] = useState(false);
@@ -113,7 +114,7 @@ export default function Main() {
     };
 
     return (
-        <div className='flex flex-col items-center justify-center w-full h-screen' style={{
+        <div className='relative flex flex-col items-center justify-center w-full h-screen' style={{
             backgroundImage: `url('/karte.png')`,
             color: 'white',
             fontSize: '30px',
@@ -123,6 +124,16 @@ export default function Main() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
         }}>
+            <div className="absolute top-0 right-0 m-4 bg-gray-800 p-2 rounded-lg text-white text-xs flex items-center">
+                <Tooltip title="Wähle mit Maus oder Pfeiltasten aus">
+                <IconButton size="small" style={{ color: 'white' }}>
+                    <InfoIcon />
+                </IconButton>
+                    
+                </Tooltip>
+                Die Auswahl kann mit Maus oder Pfeiltasten und Enter erfolgen
+            </div>
+            
             <h1 className="mb-8">Willkommen zum Textadventure Spiel! Bitte wähle ein Szenario:</h1>
 
             <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>
