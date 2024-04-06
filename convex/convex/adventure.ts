@@ -50,7 +50,7 @@ export const setupAdventureEntries = internalAction({
 
         // Generieren verschiedenre Inputs 
         switch (args.scenario) {
-            case "mystery":
+            case "Kriminalgeschichte":
                 
                 input = `Ich möchte dass du dich so verhälst als wärst du ein klassiches Textadventure Spiel
                 und wir spielen.
@@ -69,7 +69,7 @@ Beschreibe zuerst die Szene dann beginnt das Abenteuer.
                 `;
                 
                 break;
-            case "fantasy":
+            case "Fantasy":
                 input = ` Wir spielen zusammen ein klassisches Textadventure Spiel!
                 
                 Das Szenario das du dem Spieler beschreibst sieht folgendermaßen aus:
@@ -105,7 +105,7 @@ Beschreibe zuerst die Szene dann beginnt das Abenteuer.
 
                 `;
                 break;
-            case "zork":
+            case "Zork":
                 input = `
                 Wir spielen zusammen das klassische Textadventure Spiel Zork!
                 Du bist Dungeon Master und ich der Spieler.

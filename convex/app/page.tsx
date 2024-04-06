@@ -12,7 +12,7 @@ export default function Main() {
     const [selectedScenarioIndex, setSelectedScenarioIndex] = useState(-1);
     const [selectedCharacterIndex, setSelectedCharacterIndex] = useState(-1);
     const [playerName, setPlayerName] = useState("");
-    const scenarios = ['fantasy', 'mystery', 'zork'];
+    const scenarios = ['Fantasy', 'Kriminalgeschichte', 'Zork'];
     const characters = ['Zauberer', 'Krieger'];
     const scenariosRef = useRef<HTMLDivElement[]>([]);
     const charactersRef = useRef<HTMLButtonElement[]>([]);
@@ -69,19 +69,19 @@ export default function Main() {
         setIsLoading(true);
 
         if (selectedScenarioIndex === -1) {
-            alert("Bitte wählen Sie zuerst ein Szenario aus.");
+            alert("Bitte wähle zuerst ein Szenario aus.");
             setIsLoading(false);
             return;
         }
 
         if (selectedCharacterIndex === -1) {
-            alert("Bitte wählen Sie zuerst einen Charakter aus.");
+            alert("Bitte wähle zuerst einen Charakter aus.");
             setIsLoading(false);
             return;
         }
 
         if (!playerName) {
-            alert("Bitte geben Sie Ihren Namen ein.");
+            alert("Bitte gebe einen Namen ein.");
             setIsLoading(false);
             return;
         }
@@ -123,7 +123,7 @@ export default function Main() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
         }}>
-            <h1 className="mb-8">Willkommen zum Textadventure Game! Bitte wähle ein Szenario:</h1>
+            <h1 className="mb-8">Willkommen zum Textadventure Spiel! Bitte wähle ein Szenario:</h1>
 
             <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>
                 {scenarios.map((scenario, index) => {
@@ -165,7 +165,7 @@ export default function Main() {
 
             {selectedCharacterIndex !== -1 && (
                 <form onSubmit={handleSubmit} className="flex flex-col items-center gap-2 mt-4">
-                    <h2>Geben Sie Ihren Namen ein:</h2>
+                    <h2>Gebe einen Spielernamen ein:</h2>
                     <input
                         type="text"
                         value={playerName}
@@ -182,7 +182,7 @@ export default function Main() {
                 onClick={handleStartAdventure}
                 disabled={isLoading}
             >
-                {isLoading ? <CircularProgress size={24} color="inherit" /> : "Start Adventure"}
+                {isLoading ? <CircularProgress size={24} color="inherit" /> : "Starte das Abenteuer"}
             </button>
         </div>
     );
