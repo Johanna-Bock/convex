@@ -5,6 +5,7 @@ import { useAction, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { CircularProgress } from '@mui/material'; // Import des CircularProgress-Komponenten aus Material-UI
+import Link from 'next/link'; // Import der Link-Komponente von Next.js
 
 export default function Adventure(props: { params: { adventureId: Id<"adventures"> } }) {
   const handlePlayerAction = useAction(api.chat.handlePlayerAction);
@@ -33,6 +34,13 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
       setMessage('');
       setIsLoading(false); // Setzt den Ladezustand auf false, wenn die Benutzeraktion abgeschlossen ist
     });
+  };
+
+  // Funktion zum Abbrechen des Abenteuers und Rückkehr zur Startseite
+  const handleAbortAdventure = () => {
+    // Hier kannst du weitere Aktionen ausführen, bevor das Abenteuer abgebrochen wird, z.B. API-Aufrufe oder Zustandsänderungen.
+    // Nachdem alle erforderlichen Aktionen ausgeführt wurden, kehre zur Startseite zurück.
+    window.location.href = '/';  
   };
 
   return (
@@ -87,6 +95,8 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
           </form>
         </div>
       </div>
+      {/* Button zum Abbrechen des Abenteuers und zur Rückkehr zur Startseite */}
+      <button onClick={handleAbortAdventure} style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '5px', marginTop: '20px', cursor: 'pointer' }}>Abenteuer abbrechen</button>
     </main>
   );
 }

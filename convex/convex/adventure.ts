@@ -130,6 +130,7 @@ Er sieht einen Briefkasten. der Name des Spielers ist ${args.playerName} und er 
                 break;
         }
         
+        
 
         // Weitere Verarbeitung des Inputs, z. B. mit OpenAI
         const completion = await openai.chat.completions.create({

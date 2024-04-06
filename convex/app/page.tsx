@@ -40,13 +40,17 @@ export default function Main() {
                         setSelectedScenarioIndex((prevIndex) => prevIndex + 1);
                     } else if (selectedCharacterIndex < characters.length - 1) {
                         setSelectedCharacterIndex((prevIndex) => prevIndex + 1);
+                    } else if (playerNameRef.current) {
+                        playerNameRef.current.focus();
                     }
                     break;
                 case 'Enter':
                     if (selectedScenarioIndex !== -1 && selectedCharacterIndex === -1) {
                         setSelectedCharacterIndex(0);
-                    } else if (selectedCharacterIndex !== -1) {
-                        playerNameRef.current?.focus();
+                    } else if (selectedCharacterIndex !== -1 && !playerName) {
+                        setTimeout(() => playerNameRef.current?.focus(), 0); // Springe automatisch zum Namenseingabefeld
+                    } else if (playerName && !isLoading) {
+                        handleStartAdventure();
                     }
                     break;
                 default:
@@ -59,11 +63,11 @@ export default function Main() {
         return () => {
             window.removeEventListener('keydown', handleKeyPress);
         };
-    }, [selectedScenarioIndex, selectedCharacterIndex]);
+    }, [selectedScenarioIndex, selectedCharacterIndex, playerName, isLoading]);
 
     const handleStartAdventure = async () => {
         setIsLoading(true);
-        
+
         if (selectedScenarioIndex === -1) {
             alert("Bitte wählen Sie zuerst ein Szenario aus.");
             setIsLoading(false);
@@ -96,6 +100,11 @@ export default function Main() {
 
     const handleCharacterClick = (index: number) => {
         setSelectedCharacterIndex(index);
+        if (index === 0) { // Wenn der Zauberer ausgewählt wurde
+            setTimeout(() => {
+                playerNameRef.current?.focus(); // Automatisch zum Namenseingabefeld springen
+            }, 0);
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -104,16 +113,16 @@ export default function Main() {
     };
 
     return (
-        <div className='flex flex-col items-center justify-center w-full h-screen' style={{ 
-            backgroundImage: `url('/karte.png')`, 
-            color: 'white', 
-            fontSize: '30px', 
-            fontFamily: 'Courier', 
-            fontWeight: 'bold', 
+        <div className='flex flex-col items-center justify-center w-full h-screen' style={{
+            backgroundImage: `url('/karte.png')`,
+            color: 'white',
+            fontSize: '30px',
+            fontFamily: 'Courier',
+            fontWeight: 'bold',
             textShadow: '0 0 5px white',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            }}>
+        }}>
             <h1 className="mb-8">Willkommen zum Textadventure Game! Bitte wähle ein Szenario:</h1>
 
             <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>
