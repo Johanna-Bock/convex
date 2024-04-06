@@ -1,33 +1,45 @@
 "use client";
+//Importe
 import { useState, useEffect, useRef } from 'react';
-import { useMutation } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { useRouter } from 'next/navigation';
-import { CircularProgress, IconButton, Tooltip } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import { useMutation } from 'convex/react'; 
+import { api } from '@/convex/_generated/api'; 
+import { useRouter } from 'next/navigation'; 
+import { CircularProgress, IconButton, Tooltip } from '@mui/material'; // Importiere Material-UI-Komponenten für Ladesymbol und Button
+import InfoIcon from '@mui/icons-material/Info'; // Importiere das Info-Icon von Material-UI für Info Zeichen
+
+
+//Main Teil
 
 export default function Main() {
+    // Definiere den Status für den Ladezustand des Abenteuers
     const [isLoading, setIsLoading] = useState(false);
+    // Verwende die Mutationsfunktion, um ein neues Abenteuer zu erstellen
     const createAdventureMutation = useMutation(api.adventure.createAdventure);
+    // Verwende den Router für die Navigation zwischen Seiten
     const router = useRouter();
+    // Definiere den Status für den Index des ausgewählten Szenarios und Charakters sowie den Spielernamen
     const [selectedScenarioIndex, setSelectedScenarioIndex] = useState(-1);
     const [selectedCharacterIndex, setSelectedCharacterIndex] = useState(-1);
     const [playerName, setPlayerName] = useState("");
+    // Definiere Arrays für Szenarien, Charaktere und Refs für DOM-Elemente
     const scenarios = ['Fantasy', 'Kriminalgeschichte', 'Zork'];
     const characters = ['Zauberer', 'Krieger'];
     const scenariosRef = useRef<HTMLDivElement[]>([]);
     const charactersRef = useRef<HTMLButtonElement[]>([]);
     const playerNameRef = useRef<HTMLInputElement | null>(null);
 
+    // Effekt zur Aktualisierung der Refs bei Änderungen an Szenarien und Charakteren
     useEffect(() => {
         scenariosRef.current = scenariosRef.current.slice(0, scenarios.length);
         charactersRef.current = charactersRef.current.slice(0, characters.length);
     }, [scenarios, characters]);
 
+    // Effekt zur Verarbeitung von Tastatureingaben
     useEffect(() => {
         const handleKeyPress = (e: KeyboardEvent) => {
             switch (e.key) {
                 case 'ArrowUp':
+                    // Verarbeite die Pfeiltaste nach oben
                     if (selectedCharacterIndex >= 0) {
                         setSelectedCharacterIndex((prevIndex) => prevIndex - 1);
                     } else if (selectedScenarioIndex >= 0) {
@@ -37,6 +49,7 @@ export default function Main() {
                     }
                     break;
                 case 'ArrowDown':
+                    // Verarbeite die Pfeiltaste nach unten
                     if (selectedScenarioIndex < scenarios.length - 1 && selectedCharacterIndex === -1) {
                         setSelectedScenarioIndex((prevIndex) => prevIndex + 1);
                     } else if (selectedCharacterIndex < characters.length - 1) {
@@ -46,10 +59,11 @@ export default function Main() {
                     }
                     break;
                 case 'Enter':
+                    // Verarbeite die Eingabetaste
                     if (selectedScenarioIndex !== -1 && selectedCharacterIndex === -1) {
                         setSelectedCharacterIndex(0);
                     } else if (selectedCharacterIndex !== -1 && !playerName) {
-                        setTimeout(() => playerNameRef.current?.focus(), 0); // Springe automatisch zum Namenseingabefeld
+                        setTimeout(() => playerNameRef.current?.focus(), 0);
                     } else if (playerName && !isLoading) {
                         handleStartAdventure();
                     }
@@ -66,6 +80,7 @@ export default function Main() {
         };
     }, [selectedScenarioIndex, selectedCharacterIndex, playerName, isLoading]);
 
+    // Funktion zum Starten eines Abenteuers
     const handleStartAdventure = async () => {
         setIsLoading(true);
 
@@ -87,32 +102,37 @@ export default function Main() {
             return;
         }
 
+        // Führe die Mutation aus, um ein neues Abenteuer zu erstellen
         const adventureId = await createAdventureMutation({
             scenario: scenarios[selectedScenarioIndex],
             character: characters[selectedCharacterIndex],
             playerName: playerName
         });
+        // Navigiere zur Abenteuerseite
         router.push(`/adventures/${adventureId}`);
     };
 
+    // Funktionen zum Behandeln von Klicks auf Szenarien und Charaktere
     const handleScenarioClick = (index: number) => {
         setSelectedScenarioIndex(index);
     };
 
     const handleCharacterClick = (index: number) => {
         setSelectedCharacterIndex(index);
-        if (index === 0) { // Wenn der Zauberer ausgewählt wurde
+        if (index === 0) {
             setTimeout(() => {
-                playerNameRef.current?.focus(); // Automatisch zum Namenseingabefeld springen
+                playerNameRef.current?.focus();
             }, 0);
         }
     };
 
+    // Funktion zum Bearbeiten des Formular-Submit-Ereignisses
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         handleStartAdventure();
     };
 
+    // Rendern der Komponente
     return (
         <div className='relative flex flex-col items-center justify-center w-full h-screen' style={{
             backgroundImage: `url('/karte.png')`,
@@ -124,18 +144,20 @@ export default function Main() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
         }}>
+            {/* Info-Kästchen zur Anzeige der Information zur Auswahl mit Maus oder Pfeiltasten */}
             <div className="absolute top-0 right-0 m-4 bg-gray-800 p-2 rounded-lg text-white text-xs flex items-center">
                 <Tooltip title="Wähle mit Maus oder Pfeiltasten aus">
-                <IconButton size="small" style={{ color: 'white' }}>
-                    <InfoIcon />
-                </IconButton>
-                    
+                    <IconButton size="small" style={{ color: 'white' }}>
+                        <InfoIcon />
+                    </IconButton>
                 </Tooltip>
                 Die Auswahl kann mit Maus oder Pfeiltasten und Enter erfolgen
             </div>
             
+            {/* Überschrift */}
             <h1 className="mb-8">Willkommen zum Textadventure Spiel! Bitte wähle ein Szenario:</h1>
 
+            {/* Szenarioauswahl */}
             <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>
                 {scenarios.map((scenario, index) => {
                     return (
@@ -148,7 +170,7 @@ export default function Main() {
                         >
                             <img
                                 src={`/${scenario}.png`}
-                                style={{ width: '400px', height: '200px' }} // Setze die Größe der Bilder hier
+                                style={{ width: '400px', height: '200px' }}
                                 alt={scenario}
                             />
                             {scenario}
@@ -157,6 +179,7 @@ export default function Main() {
                 })}
             </div>
 
+            {/* Charakterauswahl */}
             {selectedScenarioIndex !== -1 && (
                 <div className="flex flex-col items-center gap-2 mt-4">
                     <h2>Wählen Sie Ihren Charakter:</h2>
@@ -174,6 +197,7 @@ export default function Main() {
                 </div>
             )}
 
+            {/* Eingabefeld für den Spielernamen */}
             {selectedCharacterIndex !== -1 && (
                 <form onSubmit={handleSubmit} className="flex flex-col items-center gap-2 mt-4">
                     <h2>Gebe einen Spielernamen ein:</h2>
@@ -188,6 +212,7 @@ export default function Main() {
                 </form>
             )}
 
+            {/* Button zum Starten des Abenteuers */}
             <button
                 className="bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md mt-8"
                 onClick={handleStartAdventure}
