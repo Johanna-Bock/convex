@@ -36,6 +36,12 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
     });
   };
 
+  
+  const handleAlternativeInput = (input: string) => {
+    setMessage(input);
+  };
+
+
   // Funktion zum Abbrechen des Abenteuers und Rückkehr zur Startseite
   const handleAbortAdventure = () => {
     // Hier kannst du weitere Aktionen ausführen, bevor das Abenteuer abgebrochen wird, z.B. API-Aufrufe oder Zustandsänderungen.
@@ -93,6 +99,21 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
               )}
             </div>
           </form>
+          {/* Alternative Eingabemöglichkeiten als Buttons */}
+          {/* Auswahlmöglichkeiten rechts unten */}
+          {/* Auswahlmöglichkeiten rechts unten */}
+<div className="absolute bottom-0 right-0 m-4">
+  <div className="bg-gray-800 p-2 rounded-lg text-white text-xs flex flex-col">
+    <button onClick={() => handleAlternativeInput('umsehen')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>Umsehen</button>
+    <button onClick={() => handleAlternativeInput('Inventar')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>Inventar</button>
+    <button onClick={() => handleAlternativeInput('laufe nach Norden')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Norden</button>
+    <button onClick={() => handleAlternativeInput('laufe nach Süden')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Süden</button>
+    <button onClick={() => handleAlternativeInput('laufe nach Westen')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Westen</button>
+    <button onClick={() => handleAlternativeInput('laufe nach Osten')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Osten</button>
+    <button onClick={() => handleAlternativeInput('aufheben')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>aufheben</button>
+  </div>
+</div>
+
         </div>
       </div>
       {/* Button zum Abbrechen des Abenteuers und zur Rückkehr zur Startseite */}
