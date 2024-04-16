@@ -1,52 +1,73 @@
+//Dokument für die Funktionalitäten
 "use client";
-
 import { useRef, useEffect, useState } from 'react';
 import { useAction, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
-import { CircularProgress } from '@mui/material'; // Import des CircularProgress-Komponenten aus Material-UI
-import Link from 'next/link'; // Import der Link-Komponente von Next.js
+import { CircularProgress } from '@mui/material';
+import Link from 'next/link';
 
 export default function Adventure(props: { params: { adventureId: Id<"adventures"> } }) {
   const handlePlayerAction = useAction(api.chat.handlePlayerAction);
   const adventureId = props.params.adventureId;
   const entries = useQuery(api.chat.getAllEntries, { adventureId });
   const [message, setMessage] = useState('');
-  const messageEndRef = useRef<HTMLDivElement>(null); // Referenz für das Ende des Nachrichtencontainers
-  const [isLoading, setIsLoading] = useState(false); // Zustand für das Laden des Chat-GPT
+  const messageEndRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
   let isFirstEntry = true;
 
+
+  //Scrollbar
   useEffect(() => {
-    // Automatisches Scrollen zum Ende des Containers, wenn neue Einträge hinzugefügt werden
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [entries]); // Überwacht Änderungen an den Einträgen
 
-  // Funktion zum Senden der Benutzeraktion
+    // Event-Handler für Tastatureingaben registrieren, wenn das Textfeld nicht fokussiert ist
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (document.activeElement?.tagName !== 'INPUT') {
+        handleNumberKeyPress(e);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [entries]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true); // Setzt den Ladezustand auf true, wenn die Benutzeraktion gesendet wird
+    setIsLoading(true);
     handlePlayerAction({
       message,
       adventureId,
     }).then(() => {
       setMessage('');
-      setIsLoading(false); // Setzt den Ladezustand auf false, wenn die Benutzeraktion abgeschlossen ist
+      setIsLoading(false);
     });
   };
 
-  
   const handleAlternativeInput = (input: string) => {
     setMessage(input);
   };
 
+  const handleNumberKeyPress = (e: KeyboardEvent) => {
+    const keyPressed = e.key;
+    if (keyPressed >= '1' && keyPressed <= '7') {
+      const index = parseInt(keyPressed) - 1;
+      const buttons = ['umsehen', 'Inventar', 'laufe nach Norden', 'laufe nach Süden', 'laufe nach Westen', 'laufe nach Osten', 'aufheben'];
+      setMessage(buttons[index]);
 
-  // Funktion zum Abbrechen des Abenteuers und Rückkehr zur Startseite
+      e.preventDefault();
+    } else if (keyPressed === 'Enter') {
+      handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+    }
+  };
+
   const handleAbortAdventure = () => {
-    // Hier kannst du weitere Aktionen ausführen, bevor das Abenteuer abgebrochen wird, z.B. API-Aufrufe oder Zustandsänderungen.
-    // Nachdem alle erforderlichen Aktionen ausgeführt wurden, kehre zur Startseite zurück.
-    window.location.href = '/';  
+    window.location.href = '/';
   };
 
   return (
@@ -62,13 +83,13 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
               return (
                 <div key={entry._id} className="flex flex-col gap-10 text-white">
                   {isCurrentEntryFirst ? null : (
-                    <div className="flex flex-col gap-4" style={{ fontSize: '22px', fontFamily: 'Courier' }}> {/* Erhöhter Abstand */}
-                      <span style={{ marginRight: '10px' }}>You:</span>
+                    <div className="flex flex-col gap-4" style={{ fontSize: '22px', fontFamily: 'Courier' }}>
+                      <span style={{ marginRight: '10px' }}>Spieler:</span>
                       <hr/>
                       {entry.input}
                     </div>
                   )}
-                  <div className="flex flex-col gap-4" style={{ fontSize: '22px', fontFamily: 'Courier' }}> {/* Erhöhter Abstand */}
+                  <div className="flex flex-col gap-4" style={{ fontSize: '22px', fontFamily: 'Courier' }}>
                     Dungeon Master:
                     <hr />
                     {entry.response}
@@ -78,46 +99,37 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
                 </div>
               );
             })}
-            {/* Platzhalter-Ref für das automatische Scrollen */}
             <div ref={messageEndRef} />
           </div>
-
-          {/* Formular zum Senden der Benutzeraktion */}
           <form onSubmit={handleSubmit}>
-          <input
+            <input
               className="p-1 rounded text-black"
               name="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            {/* Anzeigen des Ladebalkens, wenn isLoading true ist */}
-            <div style={{ marginRight: '50px', marginTop: '5px'  }}> {/* Hier wird die margin-left Eigenschaft hinzugefügt */}
+            <div style={{ marginRight: '50px', marginTop: '5px' }}>
               {isLoading ? (
                 <CircularProgress size={24} style={{ color: '#FFFFFF' }} /> 
               ) : (
-                <button type="submit" style={{ marginRight: '50px' }}>Submit</button>
+                <button type="submit" style={{ marginRight: '50px' }}>Bestätigen</button>
               )}
             </div>
           </form>
-          {/* Alternative Eingabemöglichkeiten als Buttons */}
-          {/* Auswahlmöglichkeiten rechts unten */}
-          {/* Auswahlmöglichkeiten rechts unten */}
-<div className="absolute bottom-0 right-0 m-4">
-  <div className="bg-gray-800 p-2 rounded-lg text-white text-xs flex flex-col">
-    <button onClick={() => handleAlternativeInput('umsehen')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>Umsehen</button>
-    <button onClick={() => handleAlternativeInput('Inventar')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>Inventar</button>
-    <button onClick={() => handleAlternativeInput('laufe nach Norden')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Norden</button>
-    <button onClick={() => handleAlternativeInput('laufe nach Süden')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Süden</button>
-    <button onClick={() => handleAlternativeInput('laufe nach Westen')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Westen</button>
-    <button onClick={() => handleAlternativeInput('laufe nach Osten')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Osten</button>
-    <button onClick={() => handleAlternativeInput('aufheben')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>aufheben</button>
-  </div>
-</div>
-
+          <div className="absolute bottom-0 right-0 m-4">
+            <div className="bg-gray-800 p-2 rounded-lg text-white text-xs flex flex-col">
+              <button onClick={() => handleAlternativeInput('umsehen')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>Umsehen</button>
+              <button onClick={() => handleAlternativeInput('Inventar')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>Inventar</button>
+              <button onClick={() => handleAlternativeInput('laufe nach Norden')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Norden</button>
+              <button onClick={() => handleAlternativeInput('laufe nach Süden')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Süden</button>
+              <button onClick={() => handleAlternativeInput('laufe nach Westen')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Westen</button>
+              <button onClick={() => handleAlternativeInput('laufe nach Osten')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>laufe nach Osten</button>
+              <button onClick={() => handleAlternativeInput('aufheben')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>aufheben</button>
+            </div>
+          </div>
         </div>
       </div>
-      {/* Button zum Abbrechen des Abenteuers und zur Rückkehr zur Startseite */}
-      <button onClick={handleAbortAdventure} style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '5px', marginTop: '20px', cursor: 'pointer' }}>Abenteuer abbrechen</button>
+      <button onClick={handleAbortAdventure} style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '5px', marginTop: '20px', cursor: 'pointer' }}>Abenteuer beenden</button>
     </main>
   );
 }

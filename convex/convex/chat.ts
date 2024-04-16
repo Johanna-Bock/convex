@@ -1,4 +1,4 @@
-
+//hier wird die Interaktion mit OpenAI definiert
 
 import { v } from "convex/values";
 import { action, internalQuery, mutation, query } from "./_generated/server";
@@ -16,7 +16,8 @@ export const getEntriesForAdventure = internalQuery({
     .collect();
   },
 });
-
+//Aktion nach drücken des Buttons
+//Action
 export const handlePlayerAction = action({
   args: {
     message: v.string(),
@@ -24,7 +25,7 @@ export const handlePlayerAction = action({
   
   },
   handler: async (ctx, args) => {
-
+//Query
     const entries = await ctx.runQuery(internal.chat.getEntriesForAdventure, {
       adventureId: args.adventureId,
       
@@ -41,16 +42,20 @@ export const handlePlayerAction = action({
     const completion = await openai.chat.completions.create({
       messages: [{role: "user", content: `${prefix} ${userPrompt}`}],
       model: "gpt-3.5-turbo",
+
     });
     const input = userPrompt;
     const response = completion.choices[0].message.content ??"";
-
+//Mutation
     await ctx.runMutation(api.chat.insertEntry, {
       input,
       response,
       adventureId: args.adventureId,
     });
+  
+    
   },
+  
 });
 
 export const insertEntry = mutation({

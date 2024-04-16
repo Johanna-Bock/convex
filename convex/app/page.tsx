@@ -4,42 +4,42 @@ import { useState, useEffect, useRef } from 'react';
 import { useMutation } from 'convex/react'; 
 import { api } from '@/convex/_generated/api'; 
 import { useRouter } from 'next/navigation'; 
-import { CircularProgress, IconButton, Tooltip } from '@mui/material'; // Importiere Material-UI-Komponenten für Ladesymbol und Button
-import InfoIcon from '@mui/icons-material/Info'; // Importiere das Info-Icon von Material-UI für Info Zeichen
+import { CircularProgress, IconButton, Tooltip } from '@mui/material'; // Importe für Ladesymbol und Button
+import InfoIcon from '@mui/icons-material/Info'; // Importiere das Info-Icon für Info Zeichen
 
 
-//Main Teil
+
 
 export default function Main() {
-    // Definiere den Status für den Ladezustand des Abenteuers
+    // Definiere den Status für den Ladezustand 
     const [isLoading, setIsLoading] = useState(false);
-    // Verwende die Mutationsfunktion, um ein neues Abenteuer zu erstellen
+    // Mutationsfunktion aufrufen für neues Abenteuer
     const createAdventureMutation = useMutation(api.adventure.createAdventure);
-    // Verwende den Router für die Navigation zwischen Seiten
+    // Router
     const router = useRouter();
-    // Definiere den Status für den Index des ausgewählten Szenarios und Charakters sowie den Spielernamen
+    // Filter
     const [selectedScenarioIndex, setSelectedScenarioIndex] = useState(-1);
     const [selectedCharacterIndex, setSelectedCharacterIndex] = useState(-1);
     const [playerName, setPlayerName] = useState("");
-    // Definiere Arrays für Szenarien, Charaktere und Refs für DOM-Elemente
+  
     const scenarios = ['Fantasy', 'Kriminalgeschichte', 'Zork'];
     const characters = ['Zauberer', 'Krieger'];
     const scenariosRef = useRef<HTMLDivElement[]>([]);
     const charactersRef = useRef<HTMLButtonElement[]>([]);
     const playerNameRef = useRef<HTMLInputElement | null>(null);
 
-    // Effekt zur Aktualisierung der Refs bei Änderungen an Szenarien und Charakteren
+  
     useEffect(() => {
         scenariosRef.current = scenariosRef.current.slice(0, scenarios.length);
         charactersRef.current = charactersRef.current.slice(0, characters.length);
     }, [scenarios, characters]);
 
-    // Effekt zur Verarbeitung von Tastatureingaben
+    // Tastatureingaben
     useEffect(() => {
         const handleKeyPress = (e: KeyboardEvent) => {
             switch (e.key) {
                 case 'ArrowUp':
-                    // Verarbeite die Pfeiltaste nach oben
+                    // Pfeiltaste nach oben
                     if (selectedCharacterIndex >= 0) {
                         setSelectedCharacterIndex((prevIndex) => prevIndex - 1);
                     } else if (selectedScenarioIndex >= 0) {
@@ -49,7 +49,7 @@ export default function Main() {
                     }
                     break;
                 case 'ArrowDown':
-                    // Verarbeite die Pfeiltaste nach unten
+                    // Pfeiltaste nach unten
                     if (selectedScenarioIndex < scenarios.length - 1 && selectedCharacterIndex === -1) {
                         setSelectedScenarioIndex((prevIndex) => prevIndex + 1);
                     } else if (selectedCharacterIndex < characters.length - 1) {
@@ -58,8 +58,9 @@ export default function Main() {
                         playerNameRef.current.focus();
                     }
                     break;
+                    
                 case 'Enter':
-                    // Verarbeite die Eingabetaste
+                    // Eingabetaste
                     if (selectedScenarioIndex !== -1 && selectedCharacterIndex === -1) {
                         setSelectedCharacterIndex(0);
                     } else if (selectedCharacterIndex !== -1 && !playerName) {
@@ -80,7 +81,7 @@ export default function Main() {
         };
     }, [selectedScenarioIndex, selectedCharacterIndex, playerName, isLoading]);
 
-    // Funktion zum Starten eines Abenteuers
+    // Starten eines Abenteuers
     const handleStartAdventure = async () => {
         setIsLoading(true);
 
@@ -108,11 +109,11 @@ export default function Main() {
             character: characters[selectedCharacterIndex],
             playerName: playerName
         });
-        // Navigiere zur Abenteuerseite
+        // Navigation
         router.push(`/adventures/${adventureId}`);
     };
 
-    // Funktionen zum Behandeln von Klicks auf Szenarien und Charaktere
+    // Button
     const handleScenarioClick = (index: number) => {
         setSelectedScenarioIndex(index);
     };
