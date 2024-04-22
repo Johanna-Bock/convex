@@ -14,7 +14,7 @@ export default function Main() {
     // Definiere den Status für den Ladezustand 
     const [isLoading, setIsLoading] = useState(false);
     // Mutationsfunktion aufrufen für neues Abenteuer
-    const createAdventureMutation = useMutation(api.adventure.createAdventure);
+    const setupAdventureMutation = useMutation(api.adventure.setupAdventure);
     // Router
     const router = useRouter();
     // Filter
@@ -104,7 +104,7 @@ export default function Main() {
         }
 
         // Führe die Mutation aus, um ein neues Abenteuer zu erstellen
-        const adventureId = await createAdventureMutation({
+        const adventureId = await setupAdventureMutation({
             scenario: scenarios[selectedScenarioIndex],
             character: characters[selectedCharacterIndex],
             playerName: playerName
@@ -156,7 +156,7 @@ export default function Main() {
             </div>
             
             {/* Überschrift */}
-            <h1 className="mb-8">Willkommen zum Textadventure Spiel! Bitte wähle ein Szenario:</h1>
+            <h1 className="mb-8">Willkommen zum Textadventure AI-Quest! Bitte wähle ein Szenario:</h1>
 
             {/* Szenarioauswahl */}
             <div className="grid grid-cols-3 gap-8" style={{ width: '1000px' }}>

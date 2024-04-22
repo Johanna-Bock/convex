@@ -7,7 +7,7 @@ import { api, internal } from './_generated/api';
 
 const openai = new OpenAI();
 
-export const getEntriesForAdventure = internalQuery({
+export const getEntries = internalQuery({
   args: {
     adventureId: v.id("adventures"),
   },
@@ -18,7 +18,7 @@ export const getEntriesForAdventure = internalQuery({
 });
 //Aktion nach drücken des Buttons
 //Action
-export const handlePlayerAction = action({
+export const usePlayerInput = action({
   args: {
     message: v.string(),
     adventureId: v.id("adventures"),
@@ -26,7 +26,7 @@ export const handlePlayerAction = action({
   },
   handler: async (ctx, args) => {
 //Query
-    const entries = await ctx.runQuery(internal.chat.getEntriesForAdventure, {
+    const entries = await ctx.runQuery(internal.chat.getEntries, {
       adventureId: args.adventureId,
       
     });

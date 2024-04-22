@@ -7,7 +7,7 @@ import { api, internal } from './_generated/api';
 
 const openai = new OpenAI();
 
-export const createAdventure = mutation({
+export const setupAdventure = mutation({
     args: {
         scenario: v.string(),
         character: v.string(),
@@ -20,7 +20,7 @@ export const createAdventure = mutation({
             playerName: args.playerName,
         });
 
-        await ctx.scheduler.runAfter(0, internal.adventure.setupAdventureEntries, {
+        await ctx.scheduler.runAfter(0, internal.adventure.integrateEntries, {
             adventureId: id,
             scenario: args.scenario,
             character: args.character,
@@ -31,7 +31,7 @@ export const createAdventure = mutation({
     },
 });
 //Query
-export const getAdventure = internalQuery({
+export const Adventure = internalQuery({
     args:{
         adventureId: v.id("adventures"),
     },
@@ -40,7 +40,7 @@ export const getAdventure = internalQuery({
     },
 });
 //Action
-export const setupAdventureEntries = internalAction({
+export const integrateEntries = internalAction({
     args: {
         adventureId: v.id("adventures"),
         scenario: v.string(),

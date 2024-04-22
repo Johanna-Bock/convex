@@ -1,4 +1,3 @@
-//Dokument für die Funktionalitäten
 "use client";
 import { useRef, useEffect, useState } from 'react';
 import { useAction, useQuery } from 'convex/react';
@@ -8,25 +7,26 @@ import { CircularProgress } from '@mui/material';
 import Link from 'next/link';
 
 export default function Adventure(props: { params: { adventureId: Id<"adventures"> } }) {
-  const handlePlayerAction = useAction(api.chat.handlePlayerAction);
+  const usePlayerInput = useAction(api.chat.usePlayerInput);
   const adventureId = props.params.adventureId;
   const entries = useQuery(api.chat.getAllEntries, { adventureId });
   const [message, setMessage] = useState('');
   const messageEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null); // Referenz zum Eingabefeld
+  const abortButtonRef = useRef<HTMLButtonElement>(null); // Referenz zum "Abenteuer beenden" Button
   const [isLoading, setIsLoading] = useState(false);
   let isFirstEntry = true;
 
-
-  //Scrollbar
   useEffect(() => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    // Fokussiere das Eingabefeld, wenn die Komponente geladen wird
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
 
-    // Event-Handler für Tastatureingaben registrieren, wenn das Textfeld nicht fokussiert ist
+    // Event-Handler für das Keydown-Event registrieren
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (document.activeElement?.tagName !== 'INPUT') {
-        handleNumberKeyPress(e);
+      if (e.key === 'Escape') {
+        handleAbortAdventure(); // Wenn Escape gedrückt wird, rufe die Funktion zum Beenden des Abenteuers auf
       }
     };
 
@@ -35,12 +35,19 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
+  }, []); // Leeres Array als Abhängigkeitsliste, um sicherzustellen, dass der Effekt nur einmal ausgeführt wird
+
+  //Scrollbar
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [entries]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    handlePlayerAction({
+    usePlayerInput({
       message,
       adventureId,
     }).then(() => {
@@ -53,21 +60,8 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
     setMessage(input);
   };
 
-  const handleNumberKeyPress = (e: KeyboardEvent) => {
-    const keyPressed = e.key;
-    if (keyPressed >= '1' && keyPressed <= '7') {
-      const index = parseInt(keyPressed) - 1;
-      const buttons = ['umsehen', 'Inventar', 'laufe nach Norden', 'laufe nach Süden', 'laufe nach Westen', 'laufe nach Osten', 'aufheben'];
-      setMessage(buttons[index]);
-
-      e.preventDefault();
-    } else if (keyPressed === 'Enter') {
-      handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
-    }
-  };
-
   const handleAbortAdventure = () => {
-    window.location.href = '/';
+    window.location.href = '/'; // Hier könnte auch die entsprechende Logik stehen, um das Abenteuer zu beenden
   };
 
   return (
@@ -103,6 +97,7 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
           </div>
           <form onSubmit={handleSubmit}>
             <input
+              ref={inputRef} // Füge die Referenz zum Eingabefeld hinzu
               className="p-1 rounded text-black"
               name="message"
               value={message}
@@ -116,6 +111,8 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
               )}
             </div>
           </form>
+          {/* Auskommentierter Abschnitt */}
+          {/*
           <div className="absolute bottom-0 right-0 m-4">
             <div className="bg-gray-800 p-2 rounded-lg text-white text-xs flex flex-col">
               <button onClick={() => handleAlternativeInput('umsehen')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>Umsehen</button>
@@ -127,9 +124,10 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
               <button onClick={() => handleAlternativeInput('aufheben')} style={{ backgroundColor: 'gray', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}>aufheben</button>
             </div>
           </div>
+          */}
         </div>
       </div>
-      <button onClick={handleAbortAdventure} style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '5px', marginTop: '20px', cursor: 'pointer' }}>Abenteuer beenden</button>
+      <button ref={abortButtonRef} onClick={handleAbortAdventure} style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '5px', marginTop: '20px', cursor: 'pointer' }}>Abenteuer beenden</button>
     </main>
   );
 }
