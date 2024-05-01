@@ -17,6 +17,7 @@ export default function Adventure(props: { params: { adventureId: Id<"adventures
   const [isLoading, setIsLoading] = useState(false);
   let isFirstEntry = true;
 
+  
   useEffect(() => {
     // Fokussiere das Eingabefeld, wenn die Komponente geladen wird
     if (inputRef.current) {

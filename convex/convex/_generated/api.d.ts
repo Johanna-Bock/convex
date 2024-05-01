@@ -14,8 +14,8 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as adventure from "../adventure.js";
-import type * as chat from "../chat.js";
+import type * as backenddefinition from "../backenddefinition.js";
+import type * as promt from "../promt.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -26,8 +26,8 @@ import type * as chat from "../chat.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  adventure: typeof adventure;
-  chat: typeof chat;
+  backenddefinition: typeof backenddefinition;
+  promt: typeof promt;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

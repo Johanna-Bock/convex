@@ -1,5 +1,5 @@
 
-//hier ist das Setup für den Start Promt
+//hier ist das Setup für den Start chat
 import { v } from "convex/values";
 import { internalAction, internalQuery, mutation } from "./_generated/server";
 import OpenAI from 'openai';
