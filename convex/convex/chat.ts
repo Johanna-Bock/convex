@@ -32,7 +32,7 @@ export const usePlayerInput = action({
     });
 
     const prefix = entries
-      .map((entry) => {
+      .map((entry: { input: any; response: any; }) => {
         return `${entry.input}\n\n${entry.response}`;
       })
       .join("\n\n");
