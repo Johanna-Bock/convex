@@ -20,7 +20,7 @@ export const setupAdventure = mutation({
             playerName: args.playerName,
         });
 
-        await ctx.scheduler.runAfter(0, internal.adventure.integrateEntries, {
+        await ctx.scheduler.runAfter(0, internal.prompt.integrateEntries, {
             adventureId: id,
             scenario: args.scenario,
             character: args.character,

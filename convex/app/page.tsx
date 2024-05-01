@@ -14,7 +14,7 @@ export default function Main() {
     // Definiere den Status für den Ladezustand 
     const [isLoading, setIsLoading] = useState(false);
     // Mutationsfunktion aufrufen für neues Abenteuer
-    const setupAdventureMutation = useMutation(api.adventure.setupAdventure);
+    const setupAdventureMutation = useMutation(api.prompt.setupAdventure);
     // Router
     const router = useRouter();
     // Filter
