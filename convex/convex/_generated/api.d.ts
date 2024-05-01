@@ -14,7 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as chat from "../chat.js";
+import type * as backend from "../backend.js";
 import type * as prompt from "../prompt.js";
 
 /**
@@ -26,7 +26,7 @@ import type * as prompt from "../prompt.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  chat: typeof chat;
+  backend: typeof backend;
   prompt: typeof prompt;
 }>;
 export declare const api: FilterApi<

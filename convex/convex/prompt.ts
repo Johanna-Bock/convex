@@ -118,7 +118,7 @@ export const integrateEntries = internalAction({
 
         const response = completion.choices[0].message.content ?? "";
 //Mutation
-        await ctx.runMutation(api.chat.insertEntry, {
+        await ctx.runMutation(api.backend.insertEntry, {
             response,
             adventureId: args.adventureId,
             input: ""

@@ -26,7 +26,7 @@ export const usePlayerInput = action({
   },
   handler: async (ctx, args) => {
 //Query
-    const entries = await ctx.runQuery(internal.chat.getEntries, {
+    const entries = await ctx.runQuery(internal.backend.getEntries, {
       adventureId: args.adventureId,
       
     });
@@ -47,7 +47,7 @@ export const usePlayerInput = action({
     const input = userPrompt;
     const response = completion.choices[0].message.content ??"";
 //Mutation
-    await ctx.runMutation(api.chat.insertEntry, {
+    await ctx.runMutation(api.backend.insertEntry, {
       input,
       response,
       adventureId: args.adventureId,

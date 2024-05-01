@@ -7,9 +7,9 @@ import { CircularProgress } from '@mui/material';
 import Link from 'next/link';
 
 export default function Adventure(props: { params: { adventureId: Id<"adventures"> } }) {
-  const usePlayerInput = useAction(api.chat.usePlayerInput);
+  const usePlayerInput = useAction(api.backend.usePlayerInput);
   const adventureId = props.params.adventureId;
-  const entries = useQuery(api.chat.getAllEntries, { adventureId });
+  const entries = useQuery(api.backend.getAllEntries, { adventureId });
   const [message, setMessage] = useState('');
   const messageEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null); // Referenz zum Eingabefeld
