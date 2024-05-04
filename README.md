@@ -19,7 +19,7 @@ Um die Anwendung zu nutzen:
 -VS-Code installieren auf https://code.visualstudio.com/
 -Neustart vom rechner ggf notwendig
 -VS-Code öffnen
--klonen des GitRepos mit "git clone" im Terminal
+-klonen des GitRepos mit "git clone https://github.com/Johanna-Bock/convex.git" im Terminal
 -npm install convex im Terminal eingeben
 -npx convex dev (ggf. in einem neuen Terminal eingeben)
 -neues Projekt anlegen (ich habe es convex genannt)
